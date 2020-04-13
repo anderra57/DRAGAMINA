@@ -276,7 +276,7 @@ public class Kontroladore implements ActionListener, Observer{
 		irabazlePanela.getPanelSouth().add(btnAurpegiIrab);
 	}
 
-	public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla, arg2-->klik ezker edo eskuin
+	public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla
 		Panela panela = Panela.getNirePanela();
 		JLabel[] lc = Panela.getNirePanela().getListaCasillas();
 		JLabel label = lc[((Casilla)arg1).posizioa()];
@@ -298,6 +298,7 @@ public class Kontroladore implements ActionListener, Observer{
 		}else {//klik eskuina
 			if(((Casilla)arg1).getEgoera()==1){//kendu bandera
 				label.setIcon(new ImageIcon("res/bandera.gif"));
+				
 			}else {//jarri bandera
 				label.setIcon(new ImageIcon("res/tablero.gif"));
 			}

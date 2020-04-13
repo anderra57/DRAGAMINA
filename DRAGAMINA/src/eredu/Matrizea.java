@@ -170,7 +170,7 @@ public class Matrizea extends Observable{//EMA
 		begiratuGabe.add(k);
 		while(!begiratuGabe.isEmpty()) {
 			kasilla=begiratuGabe.remove();
-			kasilla.kudeatu();
+			kasillaOnakBatKendu();
 			kasilla.egoeraAldatu(0);
 			i = kasilla.geti();
 			j = kasilla.getj();
@@ -367,7 +367,7 @@ public class Matrizea extends Observable{//EMA
 						MatrizeaZabaldu(c);
 				}else{
 						c.klikaAldatu(1);
-						c.kudeatu();
+						kasillaOnakBatKendu();
 						c.egoeraAldatu(0);
 						gehituHashSetan(c.posizioa());
 						setChanged();
