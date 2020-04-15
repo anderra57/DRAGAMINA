@@ -39,6 +39,8 @@ public class Matrizea extends Observable{//EMA
 	private static boolean emanda;
 	private static boolean bukatua;
 	private Panela panela=Panela.getNirePanela();
+	private long partidaHasiera;
+	private String jokalariarenIzena;
 	private static ArrayList<Integer> listaBanderak;
 	
 	private Matrizea() {
@@ -261,7 +263,7 @@ public class Matrizea extends Observable{//EMA
 			setj(10);
 			Kontroladore k = new Kontroladore();
 			setZailtasuna(1);	
-			k.setIzena(izena);
+			setIzena(izena);
 			k.hasieratu();
 		}else if(zailtasuna==2) {
 			seti(10);
@@ -269,14 +271,14 @@ public class Matrizea extends Observable{//EMA
 			// Kontroladore klaseko metodo batetan erabiltzeko
 			Kontroladore k = new Kontroladore();
 			setZailtasuna(2);
-			k.setIzena(izena);
+			setIzena(izena);
 			k.hasieratu();
 		}else {
 			seti(12);
 			setj(25);
 			Kontroladore k = new Kontroladore();
 			setZailtasuna(3);
-			k.setIzena(izena);
+			setIzena(izena);
 			k.hasieratu();
 		}
 	}
@@ -470,10 +472,9 @@ public class Matrizea extends Observable{//EMA
 	}
 	
 	public void sartuListaIrabazlean() {
-		Kontroladore k = new Kontroladore();
 		// PUNTUAZIO SISTEMA: (zailtasuna * zutabeKop * errenkadaKop * pi * 1.000.000 / partidarenIraupena_milisegundotan)-ren borobilketa osoa.
-		int partidakoPunt=(int)(getZailtasuna()*zutabea*errenkada*Math.PI*1000000/((int)(System.currentTimeMillis()-k.partidaHasiera)));
-		
+		int partidakoPunt=(int)(getZailtasuna()*zutabea*errenkada*Math.PI*1000000/((int)(System.currentTimeMillis()-partidaHasiera)));
+
 		// 1) irabazleak.txt fitxeroa irakurri
 		String linea="";
 		try{      
@@ -502,7 +503,7 @@ public class Matrizea extends Observable{//EMA
 			boolean aurk=false;
 			while (!aurk){
 				if (partidakoPunt > arrayPair.get(i).getKey()){ // BERDINKETA BADAGO, PUNTUAZIO ZAHARRENAK DAUKA LEHENTASUNA
-					arrayPair.add(i,new AbstractMap.SimpleEntry<>(partidakoPunt,k.jokalariarenIzena));
+					arrayPair.add(i,new AbstractMap.SimpleEntry<>(partidakoPunt,jokalariarenIzena));
 					arrayPair.remove(10);
 					aurk=true;
 				}
@@ -534,5 +535,13 @@ public class Matrizea extends Observable{//EMA
 		}
 		catch(IOException e) {System.out.println("Arazoa egon da \"irabazleak.txt\" fitxategia berridaztean.");}
 	}
+
+	public void setpartidaHasiera(long ctm) {
+		partidaHasiera=ctm;
+		
+	}
 	
+	public void setIzena(String s) {
+		jokalariarenIzena=s;
+	}
 }

@@ -33,9 +33,6 @@ public class Kontroladore implements ActionListener, Observer{
 	//private static boolean emanda = false;
 	//private boolean bukatua = false;
 	
-	public String jokalariarenIzena;
-	public long partidaHasiera;
-	
 	public Kontroladore() {
 		Matrizea.getNireMatrizea1().addObserver(this);
 		panela=Panela.getNirePanela();
@@ -89,7 +86,7 @@ public class Kontroladore implements ActionListener, Observer{
 		panela.setLocationRelativeTo(null);
 		panelKontHasieratu();
 		panelAurpegiHasieratu();
-		partidaHasiera=System.currentTimeMillis();
+		m.setpartidaHasiera(System.currentTimeMillis());
 	}
 	
 	private void leihoarenTamaina(int z) {
@@ -121,14 +118,6 @@ public class Kontroladore implements ActionListener, Observer{
 		Panela.getNirePanela().sortu(m.getE(),m.getZ());		
 		panela.getContentPane().add(panela.getPanelGelaxkak(), BorderLayout.CENTER);
 	}
-		
-	
-	
-	
-	public void setIzena(String s) {
-		jokalariarenIzena=s;
-	}
-	
 
 	
 	private void panelAurpegiHasieratu() {
