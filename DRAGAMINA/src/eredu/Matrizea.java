@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Observable;
-import java.util.Observable;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Scanner;
@@ -385,7 +384,6 @@ public class Matrizea extends Observable{//EMA
 	
 	public void clickEskuina(int zenb, JLabel lab) {
 		if(!bukatua) {
-			JLabel label = lab;
 			int zenbakia = zenb;
 			if(!emanda){
 				matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
