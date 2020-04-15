@@ -5,7 +5,6 @@ public abstract class Casilla {
 	protected int j;
 	protected int balioa;
 	protected Egoera egoera;
-	protected Klik klika;
 	
 	public Casilla(int x, int y, int bal) {
 		i=x;
@@ -52,30 +51,6 @@ public abstract class Casilla {
 			return 2;
 		}else {
 			return 1;
-		}
-	}
-	
-	public void klikaAldatu(int zenbakia) {
-		switch(zenbakia) {
-		case 0:
-			klika = new EzKlikatua();
-			break;
-		case 1:
-			klika = new EzkerrekoKlik();
-			break;
-		case 2:
-			klika = new EskuinekoKlik();
-			break;
-		}
-	}
-	
-	public int getKlika() {
-		if(klika instanceof EzKlikatua) {
-			return 0;
-		}else if(klika instanceof EzkerrekoKlik) {
-			return 1;
-		}else {
-			return 2;
 		}
 	}
 	

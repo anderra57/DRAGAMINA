@@ -264,7 +264,7 @@ public class Kontroladore implements ActionListener, Observer{
 		JLabel[] lc = Panela.getNirePanela().getListaCasillas();
 		JLabel label = lc[((Casilla)arg1).posizioa()];
 		
-		if(((Casilla)arg1).getKlika()==1) {//klik ezkerra
+		if(((Casilla)arg1).getEgoera()==0) {
 			if(arg1 instanceof CasillaMina) {
 				label.setIcon(new ImageIcon("res/mina-n.gif"));
 				panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
@@ -277,14 +277,10 @@ public class Kontroladore implements ActionListener, Observer{
 			}else {
 				label.setIcon(new ImageIcon("res/c"+((Casilla) arg1).getBalioa()+".gif"));
 			}
-			
-		}else {//klik eskuina
-			if(((Casilla)arg1).getEgoera()==1){//kendu bandera
-				label.setIcon(new ImageIcon("res/bandera.gif"));
-				
-			}else {//jarri bandera
-				label.setIcon(new ImageIcon("res/tablero.gif"));
-			}
+		}else if(((Casilla)arg1).getEgoera()==1) {
+			label.setIcon(new ImageIcon("res/bandera.gif"));
+		}else {
+			label.setIcon(new ImageIcon("res/tablero.gif"));
 		}
 	}
 }

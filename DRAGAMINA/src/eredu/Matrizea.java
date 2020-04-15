@@ -317,7 +317,7 @@ public class Matrizea extends Observable{//EMA
 		while(it.hasNext()){
 			pos=it.next();
 			Casilla c = this.balioaBueltatu(pos/zutabea, pos%zutabea);
-			c.klikaAldatu(1);
+			c.egoeraAldatu(0);
 			setChanged();
 			notifyObservers(c);
 		}
@@ -365,7 +365,6 @@ public class Matrizea extends Observable{//EMA
 				}else if(c instanceof CasillaHutsa){//balioa= 0 bada, lauki horretan hutsune bat dago, ondorioz, matrizea
 						MatrizeaZabaldu(c);
 				}else{
-						c.klikaAldatu(1);
 						kasillaOnakBatKendu();
 						c.egoeraAldatu(0);
 						gehituHashSetan(c.posizioa());
@@ -393,7 +392,6 @@ public class Matrizea extends Observable{//EMA
 			Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
 			if(c.getEgoera() == 1) { //bandera kendu
 				c.egoeraAldatu(2); //itxita	
-				c.klikaAldatu(2);
 				eguneratuMinaKont(false);
 				setChanged();
 				notifyObservers(c);
@@ -401,7 +399,6 @@ public class Matrizea extends Observable{//EMA
 			}
 			else if (c.getEgoera() == 2) { //bandera kokatu
 				c.egoeraAldatu(1); //bandera
-				c.klikaAldatu(2);
 				eguneratuMinaKont(true);
 				setChanged();
 				notifyObservers(c);
@@ -412,7 +409,6 @@ public class Matrizea extends Observable{//EMA
 	
 	public void zabaldu(int num, int zenbat){
 	   	Casilla c = balioaBueltatu(num/zutabea, num%zutabea);
-	   	c.klikaAldatu(1);
 	   	setChanged();
 	   	notifyObservers(c);
 	}
