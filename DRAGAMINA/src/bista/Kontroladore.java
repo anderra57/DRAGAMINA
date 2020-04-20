@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.ImageIcon;
@@ -230,7 +231,7 @@ public class Kontroladore implements ActionListener, Observer{
 		contentPane.add(irabazlePanela.getPanelSouth(), BorderLayout.SOUTH);
 		
 		JLabel btnAurpegiIrab = new JLabel();
-		btnAurpegiIrab.setIcon(new ImageIcon("res/cara1.gif"));		
+		btnAurpegiIrab.setIcon(new ImageIcon("res/cara3.gif"));		
 		btnAurpegiIrab.addMouseListener(new MouseListener(){
 			@Override
 			public void mouseClicked(MouseEvent arg0){
@@ -249,28 +250,85 @@ public class Kontroladore implements ActionListener, Observer{
 		irabazlePanela.getPanelSouth().add(btnAurpegiIrab);
 	}
 
+	public void eguneratuMinaKont() {
+		int mKop=m.getMinaKop();
+		if (mKop>=0) {
+			int hamarreko= mKop/10;
+			int bateko= mKop%10;
+			panela.getminaKontZifra().setIcon(new ImageIcon("res/n0.gif"));
+			panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
+			panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
+		}
+		else { mKop=-mKop;
+			int hamarreko= mKop/10;
+			int bateko= mKop%10;
+			panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
+			panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
+			panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
+		}
+	}
+	
+	public void banderakBegiratu() {
+		Iterator<Integer> it=m.getListaBanderak().iterator();
+		int pos;
+		while(it.hasNext()) {
+			pos=it.next();
+			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
+			if(!(c instanceof CasillaMina )) {
+				JLabel[] lc = panela.getListaCasillas();
+				lc[pos].setIcon(new ImageIcon("res/mina-x.gif"));
+			}
+		}
+	}
+	
+	public void amaierakoBanderak() {
+		Iterator<Integer> it=m.getListaMinak().iterator();
+		int pos;
+		while(it.hasNext()) {
+			pos=it.next();
+			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
+			if((c instanceof CasillaMina )) {
+				JLabel[] lc = panela.getListaCasillas();
+				lc[pos].setIcon(new ImageIcon("res/bandera.gif"));
+			}
+		}
+	}
+	
 	public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla
 		Panela panela = Panela.getNirePanela();
-		JLabel[] lc = Panela.getNirePanela().getListaCasillas();
-		JLabel label = lc[((Casilla)arg1).posizioa()];
 		
-		if(((Casilla)arg1).getEgoera()==0) {
-			if(arg1 instanceof CasillaMina) {
-				label.setIcon(new ImageIcon("res/mina-n.gif"));
-				panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
-				panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n-.gif"));
-				panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n-.gif"));
+		if(!m.getAmaiera()) {//kasilla klikatu dugu
+			JLabel[] lc = Panela.getNirePanela().getListaCasillas();
+			JLabel label = lc[((Casilla)arg1).posizioa()];
+			
+			if(((Casilla)arg1).getEgoera()==0) {//Ireki dugu kasilla
+				if(arg1 instanceof CasillaMina) {
+					panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara2.gif"));
+					banderakBegiratu();
+					label.setIcon(new ImageIcon("res/mina-n.gif"));
+					panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
+					panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n-.gif"));
+					panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n-.gif"));
+					
+				}else if(arg1 instanceof CasillaHutsa) {
+					label.setIcon(new ImageIcon("res/c0.gif"));
+					
+				}else {
+					label.setIcon(new ImageIcon("res/c"+((Casilla) arg1).getBalioa()+".gif"));
+				}
 				
-			}else if(arg1 instanceof CasillaHutsa) {
-				label.setIcon(new ImageIcon("res/c0.gif"));
+			}else if(((Casilla)arg1).getEgoera()==1) {//bandera jarri dugu
+				eguneratuMinaKont();
+				label.setIcon(new ImageIcon("res/bandera.gif"));
 				
-			}else {
-				label.setIcon(new ImageIcon("res/c"+((Casilla) arg1).getBalioa()+".gif"));
+			}else {//bandera kendu dugu
+				eguneratuMinaKont();
+				label.setIcon(new ImageIcon("res/tablero.gif"));
 			}
-		}else if(((Casilla)arg1).getEgoera()==1) {
-			label.setIcon(new ImageIcon("res/bandera.gif"));
-		}else {
-			label.setIcon(new ImageIcon("res/tablero.gif"));
+			
+		}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
+			amaierakoBanderak();
+			panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
 		}
 	}
 }

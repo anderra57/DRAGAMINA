@@ -38,6 +38,7 @@ public class Matrizea extends Observable{//EMA
 	private static int zailtasuna;
 	private static boolean emanda;
 	private static boolean bukatua;
+	private static boolean amaiera;
 	private Panela panela=Panela.getNirePanela();
 	private long partidaHasiera;
 	private String jokalariarenIzena;
@@ -67,6 +68,10 @@ public class Matrizea extends Observable{//EMA
 		return kasillaOnak;
 	}
 	
+	public boolean getAmaiera() {
+		return amaiera;
+	}
+	
 	public int getE() {
 		return Matrizea.errenkada;
 	}
@@ -77,11 +82,20 @@ public class Matrizea extends Observable{//EMA
 	
 	public void setZailtasuna(int zenbakia) {
 		zailtasuna=zenbakia;
-		minaKop=zailtasuna*zutabea;
+		minaKop=3;
+		//minaKop=zailtasuna*zutabea;
 	}
 	
 	public int getZailtasuna() {
 		return zailtasuna;
+	}
+	
+	public ArrayList<Integer> getListaBanderak(){
+		return listaBanderak;
+	}
+	
+	public ArrayList<Integer> getListaMinak(){
+		return listaMinak;
 	}
 	
 	public void gehituHashSetan(int zenbakia) {
@@ -111,10 +125,6 @@ public class Matrizea extends Observable{//EMA
 				j = rand.nextInt(zutabea);
 				c = matrizea[i][j];
 			}
-			System.out.println("MINA:");
-			System.out.println("ERRENKADA: " + (i+1));
-			System.out.println("ZUTABEA: " + (j+1));
-			System.out.println();
 			matrizea[i][j] = cf.casillaSortu(-1, i, j);//matrizean, mina bakoitzari -1 balioa emango diegu
 			kont--;
 			listaMinak.add(pos(i,j));//hemen, mina lista bat sortuko dugu, geroago beste metodo batean erabiltzeko
@@ -244,19 +254,6 @@ public class Matrizea extends Observable{//EMA
 		}
 	}
 	
-	public void banderakBegiratu() {
-		Iterator<Integer> it=listaBanderak.iterator();
-		int pos;
-		while(it.hasNext()) {
-			pos=it.next();
-			Casilla c= balioaBueltatu(pos/zutabea, pos%zutabea);
-			if(!(c instanceof CasillaMina )) {
-				JLabel[] lc = panela.getListaCasillas();
-				lc[pos].setIcon(new ImageIcon("res/mina-x.gif"));
-			}
-		}
-	}
-	
 	public void hasierakeraBotoia(int zailtasuna, String izena) {
 		if(zailtasuna==1) {
 			seti(7);
@@ -310,6 +307,7 @@ public class Matrizea extends Observable{//EMA
 		emanda=false;
 		panela.setNirePanela(null);
 		nireMatrizea1=null;
+		amaiera=false;
 		jokoBerriaHasieratu(getZailtasuna());
 	}
 	
@@ -336,19 +334,9 @@ public class Matrizea extends Observable{//EMA
 	public void kasillaOnakBatKendu() {
 		kasillaOnak--;
 	}
-
-	public void irabazia() {
-		Iterator<Integer> it=listaMinak.iterator();
-		int pos;
-		while(it.hasNext()){
-			pos=it.next();
-			bistaratuBandera(pos);
-		}
-	}
 	
 	public void clickEzkerra(int zenb, JLabel lab) {
 		if(!bukatua) {
-			Panela panela = Panela.getNirePanela();
 			int zenbakia = zenb;
 			if(!emanda){
 					matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
@@ -361,9 +349,7 @@ public class Matrizea extends Observable{//EMA
 					c.egoeraAldatu(0);
 					minakPantailaratu();
 					lab.setIcon(new ImageIcon("res/mina-r.gif"));
-					banderakBegiratu();
-					bukatua=true;
-					panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara2.gif"));
+					bukatua=true;	
 				}else if(c instanceof CasillaHutsa){//balioa= 0 bada, lauki horretan hutsune bat dago, ondorioz, matrizea
 						MatrizeaZabaldu(c);
 				}else{
@@ -375,9 +361,10 @@ public class Matrizea extends Observable{//EMA
 				}
 			}
 			if(getKasillaOnak()==0) {
-				irabazia();
+				amaiera=true;
+				setChanged();
+				notifyObservers();
 				bukatua = true;
-				panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
 				amaituPanela();
 			}
 		}
@@ -420,53 +407,24 @@ public class Matrizea extends Observable{//EMA
 			minaKop--;}
 		else {
 			minaKop++;
-		} 
-		int mKop=getMinaKop();
-		if (mKop>=0) {
-			int hamarreko= mKop/10;
-			int bateko= mKop%10;
-			panela.getminaKontZifra().setIcon(new ImageIcon("res/n0.gif"));
-			panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
-			panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
-		}
-		else { mKop=-mKop;
-			int hamarreko= mKop/10;
-			int bateko= mKop%10;
-			panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
-			panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
-			panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
-		}
+		} 	
 	}
 	
 	public int bilatu(JLabel[] a,JLabel j){
 		// metodo hau erabiliko dugu, lauki bat click egitean, jakiteko zein 
-		// posiziotan dagoen, horrela Matrizea metodoan dagoen balioaBueltatu
+		// posiziotan dagoen, horrela M  atrizea metodoan dagoen balioaBueltatu
 		// metodoari esker, lauki horren balioa jakingo dugu
 		return Arrays.asList(a).indexOf(j);
 	}
 	
-	/////////////// AMAIERAKO METODOAK ///////////////
-	
-	public void bistaratuMinak(int pos){
-		panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
-		panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n-.gif"));
-		panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n-.gif"));
-		JLabel[] lc = panela.getListaCasillas();
-		lc[pos].setIcon(new ImageIcon("res/mina-n.gif"));
-	}
-
-	public void bistaratuBandera(int pos) {
-		eguneratuMinaKont(false);
-		JLabel[] lc = panela.getListaCasillas();
-		lc[pos].setIcon(new ImageIcon("res/bandera.gif"));
-	}
+	/////////////// AMAIERAKO METODOAK //////////////
 	
 	public void amaituPanela() {
 		Panela panela = Panela.getNirePanela();
-		System.out.println("IRABAZI");
 		Kontroladore k = new Kontroladore();
 		k.hasieratuIrabazlePanela();
 		sartuListaIrabazlean();
+		
 		panela.setVisible(false);
 		IrabazlePanela.getNireIrabazlePanela().setVisible(true);
 	}
