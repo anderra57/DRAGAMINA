@@ -82,8 +82,7 @@ public class Matrizea extends Observable{//EMA
 	
 	public void setZailtasuna(int zenbakia) {
 		zailtasuna=zenbakia;
-		minaKop=3;
-		//minaKop=zailtasuna*zutabea;
+		minaKop=zailtasuna*zutabea;
 	}
 	
 	public int getZailtasuna() {
@@ -420,13 +419,9 @@ public class Matrizea extends Observable{//EMA
 	/////////////// AMAIERAKO METODOAK //////////////
 	
 	public void amaituPanela() {
-		Panela panela = Panela.getNirePanela();
 		Kontroladore k = new Kontroladore();
 		k.hasieratuIrabazlePanela();
 		sartuListaIrabazlean();
-		
-		panela.setVisible(false);
-		IrabazlePanela.getNireIrabazlePanela().setVisible(true);
 	}
 	
 	public void sartuListaIrabazlean() {

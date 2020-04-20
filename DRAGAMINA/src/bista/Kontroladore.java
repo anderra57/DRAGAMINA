@@ -127,7 +127,12 @@ public class Kontroladore implements ActionListener, Observer{
 		btnAurpegi.addMouseListener(new MouseListener(){
 			@Override
 			public void mouseClicked(MouseEvent arg0){
-				Matrizea.getNireMatrizea1().aurpegiaKlikatu();
+				if(m.getAmaiera()) {
+					panela.setVisible(false);
+					IrabazlePanela.getNireIrabazlePanela().setVisible(true);
+				}else {
+					Matrizea.getNireMatrizea1().aurpegiaKlikatu();
+				}
 			}
 
 			@Override
