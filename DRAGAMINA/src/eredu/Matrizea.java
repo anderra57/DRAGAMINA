@@ -220,6 +220,7 @@ public class Matrizea extends Observable{//EMA
 	}
 	
 	public void menuaAukeratu(int zein) {
+		amaiera=false;
 		if(zein==1) {
 			panela.setVisible(false);
 			emanda=false;
@@ -280,6 +281,7 @@ public class Matrizea extends Observable{//EMA
 	}
 	
 	public void jokoBerriaHasieratu(int zenbakia) {
+		amaiera=false;
 		if(zenbakia==1) {
 			seti(7);
 			setj(10);
