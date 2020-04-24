@@ -35,9 +35,6 @@ public class Panela extends JFrame{
 	private JLabel minaKontZifra_1;
 	private JLabel minaKontZifra_2;
 	private JLabel btnAurpegi;
-
-	
-	
 	JLabel[] listaCasillas;
 
 	
@@ -98,9 +95,7 @@ public class Panela extends JFrame{
 	public void setListaCasillas(JLabel[] lc) {
 		listaCasillas=lc;
 	}
-	
 
-   
 	public JLabel getminaKontZifra() {
 		return minaKontZifra;
 	}
@@ -178,6 +173,8 @@ public class Panela extends JFrame{
 	public void setPanelGelaxkak(JPanel pg) {
 		panelGelaxkak=pg;
 	}
+	
+	////////INTERFAZE GRAFIKOKO MATRIZEAREN SORKETA//////////
 	
 	public void sortu(int nLerro, int nZutabe){
 	   	for (int y = 0; y < nLerro; y++) {

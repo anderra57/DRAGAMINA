@@ -41,21 +41,21 @@ public abstract class Casilla {
 		case 2:
 			egoera = new Itxita();
 			break;
+		case 3:
+			egoera = new GalderaIkurra();
+			break;
 		}
 	}
 	
 	public int getEgoera() {
 		if(egoera instanceof Irekita) {
 			return 0;
-		}else if(egoera instanceof Itxita) {
-			return 2;
-		}else {
+		}else if(egoera instanceof Bandera) {
 			return 1;
+		}else if(egoera instanceof Itxita){
+			return 2;
+		}else{
+			return 3;
 		}
 	}
-	
-	public void kudeatu() {
-		egoera.Kudeatu();
-	}
-
 }

@@ -56,6 +56,9 @@ public class Matrizea extends Observable{//EMA
 		return nireMatrizea1;
 	}
 	
+	
+	//////////GETTER AND SETTER//////////
+	
 	public void seti(int i) {
 		errenkada=i;
 	}
@@ -89,6 +92,15 @@ public class Matrizea extends Observable{//EMA
 		return zailtasuna;
 	}
 	
+	public void setpartidaHasiera(long ctm) {
+		partidaHasiera=ctm;
+		
+	}
+	
+	public void setIzena(String s) {
+		jokalariarenIzena=s;
+	}
+	
 	public ArrayList<Integer> getListaBanderak(){
 		return listaBanderak;
 	}
@@ -97,10 +109,25 @@ public class Matrizea extends Observable{//EMA
 		return listaMinak;
 	}
 	
-	public void gehituHashSetan(int zenbakia) {
-		begiratuak.add(zenbakia);
+	public Casilla balioaBueltatu(int i, int j) {
+		return matrizea[i][j];
 	}
 	
+	public int getMinaKop() {
+		return minaKop;
+	}
+	
+	/////////////BESTE METODO BATZUK////////////////
+
+	private int pos(int x, int y) {
+		return(zutabea*x+y);
+	}
+	
+	public void kasillaOnakBatKendu() {
+		kasillaOnak--;
+	}	
+	
+	///////////////MATRIZEA HASIERATU////////////////
 	public void matrizeaSortu(int e, int z) {//Hemen e eta z, klikatu dugun lehenengo kasillaren koordenatuak dira
 		CasillaFactory cf = CasillaFactory.getNireCasillaFactory();
 		listaBanderak=new ArrayList<Integer>();
@@ -108,6 +135,7 @@ public class Matrizea extends Observable{//EMA
 		kasillaOnak = (errenkada*zutabea)-minaKop;//atributu honetan, mina ez duten kasilla kopurua gordeko da
 		begiratuak = new HashSet<Integer>();
 		matrizea = new Casilla[errenkada][zutabea];
+		
 		for(int i=0;i<errenkada;i++) {
 			for(int j=0;j<zutabea;j++) {
 				matrizea[i][j]=cf.casillaSortu(0, i, j);
@@ -171,6 +199,9 @@ public class Matrizea extends Observable{//EMA
 		return kop;
 	}
 	
+	
+	/////////////MATRIZEA ZABALDU///////////////
+	
 	public void MatrizeaZabaldu(Casilla k){//Metodo hau, kasilla huts bat pultsatu ondoren exekutatuko da
 		Queue<Casilla> begiratuGabe = new LinkedList<Casilla>();
 		Casilla kasilla=k;
@@ -203,139 +234,13 @@ public class Matrizea extends Observable{//EMA
 		}	
 	}
 	
-	public Casilla balioaBueltatu(int i, int j) {
-		return matrizea[i][j];
+	public void zabaldu(int num, int zenbat){
+	   	Casilla c = balioaBueltatu(num/zutabea, num%zutabea);
+	   	setChanged();
+	   	notifyObservers(c);
 	}
 	
-	public int getMinaKop() {
-		return minaKop;
-	}
-	
-	public void hasierakoSetMinak() {
-		minaKop++;		
-	}
-
-	private int pos(int x, int y) {
-		return(zutabea*x+y);
-	}
-	
-	public void menuaAukeratu(int zein) {
-		amaiera=false;
-		if(zein==1) {
-			panela.setVisible(false);
-			emanda=false;
-			panela.setNirePanela(null);
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(1);
-		}else if(zein==2) {
-			panela.setVisible(false);
-			emanda=false;
-			panela.setNirePanela(null);
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(2);
-		}else if(zein==3) {
-			panela.setVisible(false);
-			emanda=false;
-			panela.setNirePanela(null);
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(3);
-		}else if(zein==4){
-			panela.setVisible(false);
-			emanda=false;
-			panela.setNirePanela(null);
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(getZailtasuna());
-		}else {
-			try {
-				Desktop.getDesktop().browse(new File("res/info.html").toURI());
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-	
-	public void hasierakeraBotoia(int zailtasuna, String izena) {
-		if(zailtasuna==1) {
-			seti(7);
-			setj(10);
-			Kontroladore k = new Kontroladore();
-			setZailtasuna(1);	
-			setIzena(izena);
-			k.hasieratu();
-		}else if(zailtasuna==2) {
-			seti(10);
-			setj(15);// Hemen, zailtasun bakoitzari identifikatzaile bat jarriko dugu, gero
-			// Kontroladore klaseko metodo batetan erabiltzeko
-			Kontroladore k = new Kontroladore();
-			setZailtasuna(2);
-			setIzena(izena);
-			k.hasieratu();
-		}else {
-			seti(12);
-			setj(25);
-			Kontroladore k = new Kontroladore();
-			setZailtasuna(3);
-			setIzena(izena);
-			k.hasieratu();
-		}
-	}
-	
-	public void jokoBerriaHasieratu(int zenbakia) {
-		amaiera=false;
-		if(zenbakia==1) {
-			seti(7);
-			setj(10);
-			Kontroladore k = new Kontroladore();
-			setZailtasuna(1);
-			k.hasieratu();
-		}else if(zenbakia==2) {
-			seti(10);
-			setj(15);
-			Kontroladore k = new Kontroladore();
-			setZailtasuna(2);
-			k.hasieratu();
-		}else {
-			seti(12);
-			setj(25);
-			Kontroladore k = new Kontroladore();
-			setZailtasuna(3);
-			k.hasieratu();
-		}
-	}
-	
-	public void aurpegiaKlikatu() {
-		panela.setVisible(false);
-		emanda=false;
-		panela.setNirePanela(null);
-		nireMatrizea1=null;
-		amaiera=false;
-		jokoBerriaHasieratu(getZailtasuna());
-	}
-	
-	public void minakPantailaratu(){
-		Iterator<Integer> it=listaMinak.iterator();
-		int pos;
-		while(it.hasNext()){
-			pos=it.next();
-			Casilla c = this.balioaBueltatu(pos/zutabea, pos%zutabea);
-			c.egoeraAldatu(0);
-			setChanged();
-			notifyObservers(c);
-		}
-	}
-	
-	public boolean kasillaOnakHutsik() {
-		if(kasillaOnak==0) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-	
-	public void kasillaOnakBatKendu() {
-		kasillaOnak--;
-	}
-	
+	//////////////KASILLA BAT KLIKATU////////////
 	public void clickEzkerra(int zenb, JLabel lab) {
 		if(!bukatua) {
 			int zenbakia = zenb;
@@ -345,7 +250,7 @@ public class Matrizea extends Observable{//EMA
 					emanda=true;
 			}
 			Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
-			if (c.getEgoera() == 2) {
+			if (c.getEgoera() == 2 || c.getEgoera()==3) {
 				if(c instanceof CasillaMina){//balioa = -1 mina bat aurkitu dugu, ondorioz galdu dugu
 					c.egoeraAldatu(0);
 					minakPantailaratu();
@@ -356,16 +261,16 @@ public class Matrizea extends Observable{//EMA
 				}else{
 						kasillaOnakBatKendu();
 						c.egoeraAldatu(0);
-						gehituHashSetan(c.posizioa());
+						begiratuak.add(c.posizioa());
 						setChanged();
 						notifyObservers(c);
 				}
 			}
 			if(getKasillaOnak()==0) {
 				amaiera=true;
+				bukatua = true;
 				setChanged();
 				notifyObservers();
-				bukatua = true;
 				amaituPanela();
 			}
 		}
@@ -381,11 +286,11 @@ public class Matrizea extends Observable{//EMA
 			}
 			Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
 			if(c.getEgoera() == 1) { //bandera kendu
-				c.egoeraAldatu(2); //itxita	
-				eguneratuMinaKont(false);
-				setChanged();
-				notifyObservers(c);
-				listaBanderak.remove(listaBanderak.indexOf(zenbakia));
+					c.egoeraAldatu(3); //galdera ikurra
+					eguneratuMinaKont(false);
+					setChanged();
+					notifyObservers(c);
+					listaBanderak.remove(listaBanderak.indexOf(zenbakia));
 			}
 			else if (c.getEgoera() == 2) { //bandera kokatu
 				c.egoeraAldatu(1); //bandera
@@ -393,15 +298,34 @@ public class Matrizea extends Observable{//EMA
 				setChanged();
 				notifyObservers(c);
 				listaBanderak.add(zenbakia);
+			}else{//galdera ikurra klikatu dugu
+				c.egoeraAldatu(2); //itxita	
+				setChanged();
+				notifyObservers(c);
 			}
 		}
 	}
 	
-	public void zabaldu(int num, int zenbat){
-	   	Casilla c = balioaBueltatu(num/zutabea, num%zutabea);
-	   	setChanged();
-	   	notifyObservers(c);
+	public boolean kasillaOnakHutsik() {
+		if(kasillaOnak==0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
+	
+	public void minakPantailaratu(){
+		Iterator<Integer> it=listaMinak.iterator();
+		int pos;
+		while(it.hasNext()){
+			pos=it.next();
+			Casilla c = this.balioaBueltatu(pos/zutabea, pos%zutabea);
+			c.egoeraAldatu(0);
+			setChanged();
+			notifyObservers(c);
+		}
+	}
+	
 	
 	public void eguneratuMinaKont(boolean arg0) {
 		if(arg0) {
@@ -490,13 +414,101 @@ public class Matrizea extends Observable{//EMA
 		}
 		catch(IOException e) {System.out.println("Arazoa egon da \"irabazleak.txt\" fitxategia berridaztean.");}
 	}
-
-	public void setpartidaHasiera(long ctm) {
-		partidaHasiera=ctm;
-		
+	
+	//////////////PARTIDAK BERRIRO HASI///////////////
+	//MENUAREKIN
+	public void menuaAukeratu(int zein) {
+		amaiera=false;
+		if(zein==1) {
+			panela.setVisible(false);
+			emanda=false;
+			panela.setNirePanela(null);
+			nireMatrizea1=null;
+			jokoBerriaHasieratu(1);
+		}else if(zein==2) {
+			panela.setVisible(false);
+			emanda=false;
+			panela.setNirePanela(null);
+			nireMatrizea1=null;
+			jokoBerriaHasieratu(2);
+		}else if(zein==3) {
+			panela.setVisible(false);
+			emanda=false;
+			panela.setNirePanela(null);
+			nireMatrizea1=null;
+			jokoBerriaHasieratu(3);
+		}else if(zein==4){
+			panela.setVisible(false);
+			emanda=false;
+			panela.setNirePanela(null);
+			nireMatrizea1=null;
+			jokoBerriaHasieratu(getZailtasuna());
+		}else {
+			try {
+				Desktop.getDesktop().browse(new File("res/info.html").toURI());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 	
-	public void setIzena(String s) {
-		jokalariarenIzena=s;
+	//AURPEGIAREKIN
+	public void aurpegiaKlikatu() {
+		panela.setVisible(false);
+		emanda=false;
+		panela.setNirePanela(null);
+		nireMatrizea1=null;
+		amaiera=false;
+		jokoBerriaHasieratu(getZailtasuna());
+	}
+	
+	//PARTIDA LEHEN ALDIZ HASIERATU
+	public void hasierakeraBotoia(int zailtasuna, String izena) {
+		if(zailtasuna==1) {
+			seti(7);
+			setj(10);
+			Kontroladore k = new Kontroladore();
+			setZailtasuna(1);	
+			setIzena(izena);
+			k.hasieratu();
+		}else if(zailtasuna==2) {
+			seti(10);
+			setj(15);// Hemen, zailtasun bakoitzari identifikatzaile bat jarriko dugu, gero
+			// Kontroladore klaseko metodo batetan erabiltzeko
+			Kontroladore k = new Kontroladore();
+			setZailtasuna(2);
+			setIzena(izena);
+			k.hasieratu();
+		}else {
+			seti(12);
+			setj(25);
+			Kontroladore k = new Kontroladore();
+			setZailtasuna(3);
+			setIzena(izena);
+			k.hasieratu();
+		}
+	}
+	
+	public void jokoBerriaHasieratu(int zenbakia) {
+		amaiera=false;
+		if(zenbakia==1) {
+			seti(7);
+			setj(10);
+			Kontroladore k = new Kontroladore();
+			setZailtasuna(1);
+			k.hasieratu();
+		}else if(zenbakia==2) {
+			seti(10);
+			setj(15);
+			Kontroladore k = new Kontroladore();
+			setZailtasuna(2);
+			k.hasieratu();
+		}else {
+			seti(12);
+			setj(25);
+			Kontroladore k = new Kontroladore();
+			setZailtasuna(3);
+			k.hasieratu();
+		}
 	}
 }

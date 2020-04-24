@@ -31,8 +31,6 @@ public class Kontroladore implements ActionListener, Observer{
 	Panela panela;
 	IrabazlePanela irabazlePanela;
 	Matrizea m = Matrizea.getNireMatrizea1();
-	//private static boolean emanda = false;
-	//private boolean bukatua = false;
 	
 	public Kontroladore() {
 		Matrizea.getNireMatrizea1().addObserver(this);
@@ -48,13 +46,6 @@ public class Kontroladore implements ActionListener, Observer{
 		panelKontHasieratu();
 		panela.setVisible(true);
 	}
-	
-	/*@Override
-	public void update(Observable arg0, Object arg1) {
-		
-		
-		
-	}*/
 
 	@Override
 	public void actionPerformed(ActionEvent e) { // Metodo hau daukagu menuaren edozein aukera click-atzen dugunean.
@@ -178,7 +169,7 @@ public class Kontroladore implements ActionListener, Observer{
 		panelKont.add(panela.getminaKontZifra_2());
 		panela.setPanelKont(panelKont);
 		panela.getContentPane().add(panela.getPanelKont(), BorderLayout.NORTH);
-		m.hasierakoSetMinak();
+		//m.hasierakoSetMinak();
 		m.eguneratuMinaKont(true);
 	}
 
@@ -234,24 +225,7 @@ public class Kontroladore implements ActionListener, Observer{
 		panelSouth.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		irabazlePanela.setPanelSouth(panelSouth);
 		contentPane.add(irabazlePanela.getPanelSouth(), BorderLayout.SOUTH);
-		
 		JLabel btnAurpegiIrab = new JLabel();
-		btnAurpegiIrab.setIcon(new ImageIcon("res/cara3.gif"));		
-		btnAurpegiIrab.addMouseListener(new MouseListener(){
-			@Override
-			public void mouseClicked(MouseEvent arg0){
-				irabazlePanela.setVisible(false);
-				Matrizea.getNireMatrizea1().aurpegiaKlikatu();
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-		});
 		irabazlePanela.getPanelSouth().add(btnAurpegiIrab);
 	}
 
@@ -325,10 +299,12 @@ public class Kontroladore implements ActionListener, Observer{
 			}else if(((Casilla)arg1).getEgoera()==1) {//bandera jarri dugu
 				eguneratuMinaKont();
 				label.setIcon(new ImageIcon("res/bandera.gif"));
-				
-			}else {//bandera kendu dugu
+			}else if(((Casilla)arg1).getEgoera()==3) {//bandera jarri dugu
 				eguneratuMinaKont();
-				label.setIcon(new ImageIcon("res/tablero.gif"));
+				label.setIcon(new ImageIcon("res/marca.gif"));
+			}else {//bandera kendu dugu
+					eguneratuMinaKont();
+					label.setIcon(new ImageIcon("res/tablero.gif"));
 			}
 			
 		}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu

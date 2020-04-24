@@ -137,8 +137,9 @@ public class Hasieraketa extends JDialog {
 	}
 	
 	public void botoiaEdoIntroEmatean() { // Kodea birritan ez errepikatzeko sortu dugu metodo hau.
-		
-		if((textField_1.getText().equals("1"))||(textField_1.getText().equals("2"))||(textField_1.getText().equals("3"))){
+		if(textField.getText().equals("")){//izena ez bada sartzen
+			JOptionPane.showMessageDialog(textField, "Ez duzu izenik sartu");
+		}else if((textField_1.getText().equals("1"))||(textField_1.getText().equals("2"))||(textField_1.getText().equals("3"))){
 			setVisible(false);
 			Matrizea m = Matrizea.getNireMatrizea1();
 			if(textField_1.getText().equals("1")) { // Matrizearen zailtasuna = 1 denenan
@@ -150,9 +151,9 @@ public class Hasieraketa extends JDialog {
 			else if(textField_1.getText().equals("3")) { // Matrizearen zailtasuna = 3 denenan
 				m.hasierakeraBotoia(3,textField.getText());
 			}
-		}else{
-			JOptionPane.showMessageDialog(textField_1, "Sartutako balioa ez da egokia");
-			textField_1.setText("");
+		}else{//zailtasunean {1,2,3} zenbakirik sartzen ez bada
+				JOptionPane.showMessageDialog(textField_1, "Sartutako balioa ez da egokia");
+				textField_1.setText("");
 		}
 	}
 	
@@ -161,17 +162,5 @@ public class Hasieraketa extends JDialog {
 			action = new SwingAction();
 		}
 		return action;
-	}
-	
-	public void jokuBerriaHasieratu(int zenbakia) {//Metodo hau erabiliko dugu, joku berri bat sortu nahi denean,
-		//bai aurpegi botoia sakatzean eta bai menuan dagoen aukera bat hautatzean
-		Matrizea m = Matrizea.getNireMatrizea1();
-		if(zenbakia==1) { //erreza
-			m.jokoBerriaHasieratu(1);
-		}else if(zenbakia==2) { // ertaina
-			m.jokoBerriaHasieratu(2);
-		}else{ // zaila
-			m.jokoBerriaHasieratu(3);
-		}
 	}
 }
