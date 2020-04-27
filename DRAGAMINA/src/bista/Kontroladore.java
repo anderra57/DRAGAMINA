@@ -34,12 +34,17 @@ import eredu.Matrizea;
 
 public class Kontroladore implements ActionListener, Observer{
 	
-	Panela panela=Panela.getNirePanela();
-	IrabazlePanela irabazlePanela = IrabazlePanela.getNireIrabazlePanela();
+	Panela panela;
+	IrabazlePanela irabazlePanela;
 	Matrizea m = Matrizea.getNireMatrizea1();
-	private boolean bukatua=false;
+	private boolean bukatua = false;
+	private boolean buk =false;
 	
-	public Kontroladore() {}
+	public Kontroladore() {
+		Matrizea.getNireMatrizea1().addObserver(this);
+		panela=Panela.getNirePanela();
+		irabazlePanela=IrabazlePanela.getNireIrabazlePanela();
+	}
 	
 	public void hasieratu() {
 		Matrizea.getNireMatrizea1().addObserver(this);
@@ -50,6 +55,7 @@ public class Kontroladore implements ActionListener, Observer{
 		panelGelaxkakHasieratu();
 		panelAurpegiHasieratu();
 		panelKontHasieratu();
+		panela.setVisible(true);
 	}
 
 	@Override
@@ -126,7 +132,8 @@ public class Kontroladore implements ActionListener, Observer{
 					panela.setVisible(false);
 					IrabazlePanela.getNireIrabazlePanela().setVisible(true);
 				}else {
-					aurpegianKlikEgin(m.getZailtasuna());
+						aurpegianKlikEgin(m.getZailtasuna());
+					
 				}
 			}
 
@@ -326,8 +333,8 @@ public class Kontroladore implements ActionListener, Observer{
 					int zenbakia = Matrizea.getNireMatrizea1().bilatu(panela.getListaCasillas(),label);
 					if(SwingUtilities.isLeftMouseButton(arg0)) { //EZKERREKO BOTOIA
 						Matrizea.getNireMatrizea1().clickEzkerra(zenbakia,label);						
-					}else if (SwingUtilities.isRightMouseButton(arg0)) { //ESKUINEKO BOTOIA
-						Matrizea.getNireMatrizea1().clickEskuina(zenbakia,label);
+					}else if (SwingUtilities.isRightMouseButton(arg0)) { //ESKUINEKO BOTOIA	
+							Matrizea.getNireMatrizea1().clickEskuina(zenbakia,label);
 					}
 				}
 			}
@@ -362,6 +369,7 @@ public class Kontroladore implements ActionListener, Observer{
 	
 	///////////////////JOKOA BERRIZ ERE HASI(AURPEGIA)/////////////////////////
 	public void aurpegianKlikEgin(int zailtasuna) { //aurpegia klikatzen denean, joko berria hasieratuko da
+		panela.setVisible(false);
 		if(zailtasuna==1) {
 			m.aurpegiaKlikatu(zailtasuna);
 			hasieratu();

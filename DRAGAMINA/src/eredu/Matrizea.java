@@ -454,7 +454,6 @@ public class Matrizea extends Observable{//EMA
 	
 	//AURPEGIAREKIN
 	public void aurpegiaKlikatu(int zailtasuna) {
-		panela.setVisible(false);
 		emanda=false;
 		panela.setNirePanela(null);
 		nireMatrizea1=null;
