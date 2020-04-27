@@ -141,15 +141,15 @@ public class Hasieraketa extends JDialog {
 			JOptionPane.showMessageDialog(textField, "Ez duzu izenik sartu");
 		}else if((textField_1.getText().equals("1"))||(textField_1.getText().equals("2"))||(textField_1.getText().equals("3"))){
 			setVisible(false);
-			Matrizea m = Matrizea.getNireMatrizea1();
+			Kontroladore k = new Kontroladore();
 			if(textField_1.getText().equals("1")) { // Matrizearen zailtasuna = 1 denenan
-				m.hasierakeraBotoia(1,textField.getText());
+				k.jokoaLehenAldizHasieratu(1, textField.getText());
 			}
 			else if(textField_1.getText().equals("2")) { // Matrizearen zailtasuna = 2 denenan
-				m.hasierakeraBotoia(2,textField.getText());
+				k.jokoaLehenAldizHasieratu(2, textField.getText());
 			}
 			else if(textField_1.getText().equals("3")) { // Matrizearen zailtasuna = 3 denenan
-				m.hasierakeraBotoia(3,textField.getText());
+				k.jokoaLehenAldizHasieratu(3, textField.getText());
 			}
 		}else{//zailtasunean {1,2,3} zenbakirik sartzen ez bada
 				JOptionPane.showMessageDialog(textField_1, "Sartutako balioa ez da egokia");

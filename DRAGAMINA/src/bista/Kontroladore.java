@@ -1,10 +1,13 @@
 package bista;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +16,15 @@ import java.awt.event.MouseListener;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import eredu.Casilla;
@@ -28,23 +34,22 @@ import eredu.Matrizea;
 
 public class Kontroladore implements ActionListener, Observer{
 	
-	Panela panela;
-	IrabazlePanela irabazlePanela;
+	Panela panela=Panela.getNirePanela();
+	IrabazlePanela irabazlePanela = IrabazlePanela.getNireIrabazlePanela();
 	Matrizea m = Matrizea.getNireMatrizea1();
+	private boolean bukatua=false;
 	
-	public Kontroladore() {
+	public Kontroladore() {}
+	
+	public void hasieratu() {
 		Matrizea.getNireMatrizea1().addObserver(this);
-		panela=Panela.getNirePanela();
-		irabazlePanela=IrabazlePanela.getNireIrabazlePanela();
-	}
-	
-	public void hasieratu() {	
+		panela = Panela.getNirePanela();
+		irabazlePanela = IrabazlePanela.getNireIrabazlePanela();
 		panelaHasieratu();
 		menuaHasieratu();
 		panelGelaxkakHasieratu();
 		panelAurpegiHasieratu();
 		panelKontHasieratu();
-		panela.setVisible(true);
 	}
 
 	@Override
@@ -76,8 +81,6 @@ public class Kontroladore implements ActionListener, Observer{
 		panela.setVisible(true);
 		panela.setResizable(false);
 		panela.setLocationRelativeTo(null);
-		panelKontHasieratu();
-		panelAurpegiHasieratu();
 		m.setpartidaHasiera(System.currentTimeMillis());
 	}
 	
@@ -86,13 +89,13 @@ public class Kontroladore implements ActionListener, Observer{
 			panela.setSize(300,300);
 		}
 		else if (z==15) {
-			panela.setVisible(true);	panela.setSize(380,380);
+			panela.setSize(380,380);
 		}
 		else {
 			panela.setSize(580,400);
 		}
 	}
-
+	
 	private void menuaHasieratu(){
 		panela.getMenu("joku_berria").addActionListener(this);
 		panela.getMenu("erreza").addActionListener(this);
@@ -107,10 +110,11 @@ public class Kontroladore implements ActionListener, Observer{
 		panela.setPanelGelaxkak(panelGelaxkak);
 		JLabel[] listaCasillas = new JLabel[m.getE()*m.getZ()];
 		panela.setListaCasillas(listaCasillas);		
-		Panela.getNirePanela().sortu(m.getE(),m.getZ());		
+		sortu(m.getE(),m.getZ());		
 		panela.getContentPane().add(panela.getPanelGelaxkak(), BorderLayout.CENTER);
 	}
-
+	
+	
 	
 	private void panelAurpegiHasieratu() {
 		JLabel btnAurpegi = new JLabel();
@@ -122,7 +126,7 @@ public class Kontroladore implements ActionListener, Observer{
 					panela.setVisible(false);
 					IrabazlePanela.getNireIrabazlePanela().setVisible(true);
 				}else {
-					Matrizea.getNireMatrizea1().aurpegiaKlikatu();
+					aurpegianKlikEgin(m.getZailtasuna());
 				}
 			}
 
@@ -139,17 +143,7 @@ public class Kontroladore implements ActionListener, Observer{
 		JPanel panelAurpegi = new JPanel();
 		panelAurpegi.add(btnAurpegi);
 		panela.setBtnAurpegi(btnAurpegi);
-		
-		JButton btnJarraitu = new JButton("JARRAITU");
-		btnJarraitu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Matrizea.getNireMatrizea1().amaituPanela();
-			}
-		});
-		panelAurpegi.add(btnJarraitu);
-		btnJarraitu.setVisible(false);
 		panela.setPanelAurpegi(panelAurpegi);
-		
 		panela.getContentPane().add(panela.getPanelAurpegi(), BorderLayout.SOUTH);
 	}
 
@@ -219,7 +213,6 @@ public class Kontroladore implements ActionListener, Observer{
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		irabazlePanela.getPanelNorth().add(lblTitle);
 		
-		
 		JPanel panelSouth = new JPanel();
 		panelSouth.setBorder(new EmptyBorder(10, 0, 0, 0));
 		panelSouth.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -254,25 +247,16 @@ public class Kontroladore implements ActionListener, Observer{
 			pos=it.next();
 			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
 			if(!(c instanceof CasillaMina )) {
-				JLabel[] lc = panela.getListaCasillas();
+				System.out.println("HAS VUELTO?");	JLabel[] lc = panela.getListaCasillas();
 				lc[pos].setIcon(new ImageIcon("res/mina-x.gif"));
 			}
 		}
 	}
 	
-	public void amaierakoBanderak() {
-		Iterator<Integer> it=m.getListaMinak().iterator();
-		int pos;
-		while(it.hasNext()) {
-			pos=it.next();
-			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
-			if((c instanceof CasillaMina )) {
-				JLabel[] lc = panela.getListaCasillas();
-				lc[pos].setIcon(new ImageIcon("res/bandera.gif"));
-			}
-		}
-	}
+
 	
+	
+	////////////////////OBSERVERREKO UPDATE-A////////////////////////
 	public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla
 		Panela panela = Panela.getNirePanela();
 		
@@ -308,8 +292,99 @@ public class Kontroladore implements ActionListener, Observer{
 			}
 			
 		}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
+			System.out.println("SARTU?");
 			amaierakoBanderak();
 			panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
+		}
+	}
+	
+	
+	////////////////////INTERFAZEKO KASILLAK SORTU//////////////////////
+	public void sortu(int nLerro, int nZutabe){
+	   	for (int y = 0; y < nLerro; y++) {
+	   	  for (int x = 0; x < nZutabe; x++) {
+	   		JLabel gelaxkaBerri = gelaxkaSortu();
+	   		JLabel[] lc = panela.getListaCasillas();
+	   		lc[Matrizea.getNireMatrizea1().getZ()*y+x]=gelaxkaBerri;
+	   		panela.getPanelGelaxkak().add(gelaxkaBerri,new GridBagConstraints(x, y, 1, 1, 0.0, 0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+	   	  }
+	    }
+	}
+
+	private JLabel gelaxkaSortu(){
+		JLabel label = new JLabel();
+		label.setBorder(BorderFactory.createLoweredBevelBorder());
+		label.setIcon(new ImageIcon("res/tablero.gif"));
+		label.setMaximumSize(new Dimension(20, 20));
+		label.setMinimumSize(new Dimension(18, 18));
+		label.setSize(new Dimension(18, 18));
+		label.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent arg0){
+				if(!bukatua) {
+					int zenbakia = Matrizea.getNireMatrizea1().bilatu(panela.getListaCasillas(),label);
+					if(SwingUtilities.isLeftMouseButton(arg0)) { //EZKERREKO BOTOIA
+						Matrizea.getNireMatrizea1().clickEzkerra(zenbakia,label);						
+					}else if (SwingUtilities.isRightMouseButton(arg0)) { //ESKUINEKO BOTOIA
+						Matrizea.getNireMatrizea1().clickEskuina(zenbakia,label);
+					}
+				}
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+		});
+		return label;
+	}
+	
+	
+	///////////////////JOKO BERRIA HASIERATU(LEHENENGOA)///////////////////////
+
+	public void jokoaLehenAldizHasieratu(int zailtasuna, String izena) {
+		if(zailtasuna==1) {
+			m.hasierakeraBotoia(zailtasuna, izena);
+			hasieratu();
+		}else if(zailtasuna==2) {
+			m.hasierakeraBotoia(zailtasuna, izena);
+			hasieratu();
+		}else {
+			m.hasierakeraBotoia(zailtasuna, izena);
+			hasieratu();
+		}
+	}
+	
+	
+	///////////////////JOKOA BERRIZ ERE HASI(AURPEGIA)/////////////////////////
+	public void aurpegianKlikEgin(int zailtasuna) { //aurpegia klikatzen denean, joko berria hasieratuko da
+		if(zailtasuna==1) {
+			m.aurpegiaKlikatu(zailtasuna);
+			hasieratu();
+		}else if(zailtasuna==2) {
+			m.aurpegiaKlikatu(zailtasuna);
+			hasieratu();
+		}else {
+			m.aurpegiaKlikatu(zailtasuna);
+			hasieratu();
+		}
+	}
+	
+	////////////////////AMAIERAKO PANELA////////////////////////////
+	public void amaierakoBanderak() {
+		Iterator<Integer> it=m.getListaMinak().iterator();
+		int pos;
+		while(it.hasNext()) {
+			pos=it.next();
+			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
+			if((c instanceof CasillaMina )) {
+				JLabel[] lc = panela.getListaCasillas();
+				lc[pos].setIcon(new ImageIcon("res/bandera.gif"));
+			}
 		}
 	}
 }

@@ -30,7 +30,7 @@ public class Panela extends JFrame{
 	private JPanel panelGelaxkak;
 	private JPanel panelKont;
 	private JPanel panelAurpegi;
-	private boolean bukatua=false;
+	
 	private JLabel minaKontZifra;
 	private JLabel minaKontZifra_1;
 	private JLabel minaKontZifra_2;
@@ -172,50 +172,5 @@ public class Panela extends JFrame{
 
 	public void setPanelGelaxkak(JPanel pg) {
 		panelGelaxkak=pg;
-	}
-	
-	////////INTERFAZE GRAFIKOKO MATRIZEAREN SORKETA//////////
-	
-	public void sortu(int nLerro, int nZutabe){
-	   	for (int y = 0; y < nLerro; y++) {
-	   	  for (int x = 0; x < nZutabe; x++) {
-	   		JLabel gelaxkaBerri = gelaxkaSortu();
-	   		JLabel[] lc = getListaCasillas();
-	   		lc[Matrizea.getNireMatrizea1().getZ()*y+x]=gelaxkaBerri;
-	   		getPanelGelaxkak().add(gelaxkaBerri,new GridBagConstraints(x, y, 1, 1, 0.0, 0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-	   	  }
-	    }
-	}
-
-	private JLabel gelaxkaSortu(){
-		JLabel label = new JLabel();
-		label.setBorder(BorderFactory.createLoweredBevelBorder());
-		label.setIcon(new ImageIcon("res/tablero.gif"));
-		label.setMaximumSize(new Dimension(20, 20));
-		label.setMinimumSize(new Dimension(18, 18));
-		label.setSize(new Dimension(18, 18));
-		label.addMouseListener(new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent arg0){
-				if(!bukatua) {
-					int zenbakia = Matrizea.getNireMatrizea1().bilatu(getListaCasillas(),label);
-					if(SwingUtilities.isLeftMouseButton(arg0)) { //EZKERREKO BOTOIA
-						Matrizea.getNireMatrizea1().clickEzkerra(zenbakia,label);						
-					}else if (SwingUtilities.isRightMouseButton(arg0)) { //ESKUINEKO BOTOIA
-						Matrizea.getNireMatrizea1().clickEskuina(zenbakia,label);
-					}
-				}
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-		});
-		return label;
-	}
+	}	
 }	

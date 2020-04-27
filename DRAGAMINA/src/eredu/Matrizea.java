@@ -453,13 +453,13 @@ public class Matrizea extends Observable{//EMA
 	}
 	
 	//AURPEGIAREKIN
-	public void aurpegiaKlikatu() {
+	public void aurpegiaKlikatu(int zailtasuna) {
 		panela.setVisible(false);
 		emanda=false;
 		panela.setNirePanela(null);
 		nireMatrizea1=null;
 		amaiera=false;
-		jokoBerriaHasieratu(getZailtasuna());
+		jokoBerriaHasieratu(zailtasuna);
 	}
 	
 	//PARTIDA LEHEN ALDIZ HASIERATU
@@ -467,48 +467,35 @@ public class Matrizea extends Observable{//EMA
 		if(zailtasuna==1) {
 			seti(7);
 			setj(10);
-			Kontroladore k = new Kontroladore();
 			setZailtasuna(1);	
 			setIzena(izena);
-			k.hasieratu();
 		}else if(zailtasuna==2) {
 			seti(10);
 			setj(15);// Hemen, zailtasun bakoitzari identifikatzaile bat jarriko dugu, gero
 			// Kontroladore klaseko metodo batetan erabiltzeko
-			Kontroladore k = new Kontroladore();
 			setZailtasuna(2);
 			setIzena(izena);
-			k.hasieratu();
 		}else {
 			seti(12);
 			setj(25);
-			Kontroladore k = new Kontroladore();
 			setZailtasuna(3);
 			setIzena(izena);
-			k.hasieratu();
 		}
 	}
 	
 	public void jokoBerriaHasieratu(int zenbakia) {
-		amaiera=false;
 		if(zenbakia==1) {
 			seti(7);
 			setj(10);
-			Kontroladore k = new Kontroladore();
 			setZailtasuna(1);
-			k.hasieratu();
 		}else if(zenbakia==2) {
 			seti(10);
 			setj(15);
-			Kontroladore k = new Kontroladore();
 			setZailtasuna(2);
-			k.hasieratu();
 		}else {
 			seti(12);
 			setj(25);
-			Kontroladore k = new Kontroladore();
 			setZailtasuna(3);
-			k.hasieratu();
 		}
 	}
 }
