@@ -170,8 +170,6 @@ public class Kontroladore implements ActionListener, Observer{
 		panelKont.add(panela.getminaKontZifra_2());
 		panela.setPanelKont(panelKont);
 		panela.getContentPane().add(panela.getPanelKont(), BorderLayout.NORTH);
-		//m.hasierakoSetMinak();
-		m.eguneratuMinaKont(true);
 	}
 
 	public void hasieratuIrabazlePanela() {
