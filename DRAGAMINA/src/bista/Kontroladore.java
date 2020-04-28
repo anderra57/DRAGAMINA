@@ -37,8 +37,8 @@ public class Kontroladore implements ActionListener, Observer{
 	Panela panela;
 	IrabazlePanela irabazlePanela;
 	Matrizea m = Matrizea.getNireMatrizea1();
+	JLabel[] listaCasillas;
 	private boolean bukatua = false;
-	private boolean buk =false;
 	
 	public Kontroladore() {
 		Matrizea.getNireMatrizea1().addObserver(this);
@@ -114,8 +114,8 @@ public class Kontroladore implements ActionListener, Observer{
 		JPanel panelGelaxkak = new JPanel();
 		panelGelaxkak.setLayout(new GridBagLayout());
 		panela.setPanelGelaxkak(panelGelaxkak);
-		JLabel[] listaCasillas = new JLabel[m.getE()*m.getZ()];
-		panela.setListaCasillas(listaCasillas);		
+		JLabel[] listaGelaxka = new JLabel[m.getE()*m.getZ()];
+		listaCasillas=listaGelaxka;		
 		sortu(m.getE(),m.getZ());		
 		panela.getContentPane().add(panela.getPanelGelaxkak(), BorderLayout.CENTER);
 	}
@@ -252,8 +252,7 @@ public class Kontroladore implements ActionListener, Observer{
 			pos=it.next();
 			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
 			if(!(c instanceof CasillaMina )) {
-				System.out.println("HAS VUELTO?");	JLabel[] lc = panela.getListaCasillas();
-				lc[pos].setIcon(new ImageIcon("res/mina-x.gif"));
+				listaCasillas[pos].setIcon(new ImageIcon("res/mina-x.gif"));
 			}
 		}
 	}
@@ -266,8 +265,7 @@ public class Kontroladore implements ActionListener, Observer{
 		Panela panela = Panela.getNirePanela();
 		
 		if(!m.getAmaiera()) {//kasilla klikatu dugu
-			JLabel[] lc = Panela.getNirePanela().getListaCasillas();
-			JLabel label = lc[((Casilla)arg1).posizioa()];
+			JLabel label = listaCasillas[((Casilla)arg1).posizioa()];
 			
 			if(((Casilla)arg1).getEgoera()==0) {//Ireki dugu kasilla
 				if(arg1 instanceof CasillaMina) {
@@ -309,8 +307,7 @@ public class Kontroladore implements ActionListener, Observer{
 	   	for (int y = 0; y < nLerro; y++) {
 	   	  for (int x = 0; x < nZutabe; x++) {
 	   		JLabel gelaxkaBerri = gelaxkaSortu();
-	   		JLabel[] lc = panela.getListaCasillas();
-	   		lc[Matrizea.getNireMatrizea1().getZ()*y+x]=gelaxkaBerri;
+	   		listaCasillas[Matrizea.getNireMatrizea1().getZ()*y+x]=gelaxkaBerri;
 	   		panela.getPanelGelaxkak().add(gelaxkaBerri,new GridBagConstraints(x, y, 1, 1, 0.0, 0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 	   	  }
 	    }
@@ -328,7 +325,7 @@ public class Kontroladore implements ActionListener, Observer{
 			@Override
 			public void mouseClicked(MouseEvent arg0){
 				if(!bukatua) {
-					int zenbakia = Matrizea.getNireMatrizea1().bilatu(panela.getListaCasillas(),label);
+					int zenbakia = Matrizea.getNireMatrizea1().bilatu(listaCasillas,label);
 					if(SwingUtilities.isLeftMouseButton(arg0)) { //EZKERREKO BOTOIA
 						Matrizea.getNireMatrizea1().clickEzkerra(zenbakia,label);						
 					}else if (SwingUtilities.isRightMouseButton(arg0)) { //ESKUINEKO BOTOIA	
@@ -386,11 +383,7 @@ public class Kontroladore implements ActionListener, Observer{
 		int pos;
 		while(it.hasNext()) {
 			pos=it.next();
-			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
-			if((c instanceof CasillaMina )) {
-				JLabel[] lc = panela.getListaCasillas();
-				lc[pos].setIcon(new ImageIcon("res/bandera.gif"));
-			}
+			listaCasillas[pos].setIcon(new ImageIcon("res/bandera.gif"));
 		}
 	}
 }

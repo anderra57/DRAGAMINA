@@ -35,8 +35,7 @@ public class Panela extends JFrame{
 	private JLabel minaKontZifra_1;
 	private JLabel minaKontZifra_2;
 	private JLabel btnAurpegi;
-	JLabel[] listaCasillas;
-
+	
 	
 	private Panela() {
 		initialize();
@@ -85,15 +84,6 @@ public class Panela extends JFrame{
 			
 		}
 		return panelAurpegi;
-	}
-	
-	public JLabel[] getListaCasillas() {
-		return listaCasillas;
-		
-	}
-	
-	public void setListaCasillas(JLabel[] lc) {
-		listaCasillas=lc;
 	}
 
 	public JLabel getminaKontZifra() {
