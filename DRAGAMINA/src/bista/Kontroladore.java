@@ -61,6 +61,7 @@ public class Kontroladore implements ActionListener, Observer{
 	@Override
 	public void actionPerformed(ActionEvent e) { // Metodo hau daukagu menuaren edozein aukera click-atzen dugunean.
 		Matrizea m = Matrizea.getNireMatrizea1();
+		panela.setVisible(false);
 		if(e.getSource()==panela.getMenu("erreza")) {
 			m.menuaAukeratu(1);
 		}else if(e.getSource()==panela.getMenu("ertaina")) {
@@ -71,7 +72,8 @@ public class Kontroladore implements ActionListener, Observer{
 			m.menuaAukeratu(4);			
 		}else {
 			m.menuaAukeratu(5);
-		}		
+		}
+		hasieratu();
 	}
 	
 	public void panelaHasieratu() {
@@ -295,7 +297,6 @@ public class Kontroladore implements ActionListener, Observer{
 			}
 			
 		}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
-			System.out.println("SARTU?");
 			amaierakoBanderak();
 			panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
 		}

@@ -244,7 +244,7 @@ public class Matrizea extends Observable{//EMA
 	public void clickEzkerra(int zenb, JLabel lab) {
 		if(!bukatua) {
 			int zenbakia = zenb;
-			if(!emanda){
+			if(!emanda){System.out.println("SARTU?");
 					matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
 					zenbakiakJarri();
 					emanda=true;
