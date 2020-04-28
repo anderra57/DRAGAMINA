@@ -299,6 +299,7 @@ public class Kontroladore implements ActionListener, Observer{
 		}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
 			amaierakoBanderak();
 			panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
+			hasieratuIrabazlePanela();
 		}
 	}
 	
