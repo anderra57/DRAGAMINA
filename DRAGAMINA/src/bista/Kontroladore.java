@@ -62,6 +62,7 @@ public class Kontroladore implements ActionListener, Observer{
 	public void actionPerformed(ActionEvent e) { // Metodo hau daukagu menuaren edozein aukera click-atzen dugunean.
 		Matrizea m = Matrizea.getNireMatrizea1();
 		panela.setVisible(false);
+		panela.setNirePanela(null);
 		if(e.getSource()==panela.getMenu("erreza")) {
 			m.menuaAukeratu(1);
 		}else if(e.getSource()==panela.getMenu("ertaina")) {
@@ -367,6 +368,7 @@ public class Kontroladore implements ActionListener, Observer{
 	///////////////////JOKOA BERRIZ ERE HASI(AURPEGIA)/////////////////////////
 	public void aurpegianKlikEgin(int zailtasuna) { //aurpegia klikatzen denean, joko berria hasieratuko da
 		panela.setVisible(false);
+		panela.setNirePanela(null);
 		if(zailtasuna==1) {
 			m.aurpegiaKlikatu(zailtasuna);
 			hasieratu();

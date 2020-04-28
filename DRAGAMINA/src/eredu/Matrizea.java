@@ -21,8 +21,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import bista.IrabazlePanela;
-import bista.Kontroladore;
-import bista.Panela;
 
 
 public class Matrizea extends Observable{//EMA
@@ -39,7 +37,6 @@ public class Matrizea extends Observable{//EMA
 	private static boolean emanda;
 	private static boolean bukatua;
 	private static boolean amaiera;
-	private Panela panela=Panela.getNirePanela();
 	private long partidaHasiera;
 	private String jokalariarenIzena;
 	private static ArrayList<Integer> listaBanderak;
@@ -156,7 +153,6 @@ public class Matrizea extends Observable{//EMA
 			kont--;
 			listaMinak.add(pos(i,j));//hemen, mina lista bat sortuko dugu, geroago beste metodo batean erabiltzeko
 		}
-
 	}
 	
 	public void zenbakiakJarri() {
@@ -418,27 +414,19 @@ public class Matrizea extends Observable{//EMA
 	public void menuaAukeratu(int zein) {
 		amaiera=false;
 		if(zein==1) {
-			panela.setVisible(false);
 			emanda=false;
-			panela.setNirePanela(null);
 			nireMatrizea1=null;
 			jokoBerriaHasieratu(1);
 		}else if(zein==2) {
-			panela.setVisible(false);
 			emanda=false;
-			panela.setNirePanela(null);
 			nireMatrizea1=null;
 			jokoBerriaHasieratu(2);
 		}else if(zein==3) {
-			panela.setVisible(false);
 			emanda=false;
-			panela.setNirePanela(null);
 			nireMatrizea1=null;
 			jokoBerriaHasieratu(3);
 		}else if(zein==4){
-			panela.setVisible(false);
 			emanda=false;
-			panela.setNirePanela(null);
 			nireMatrizea1=null;
 			jokoBerriaHasieratu(getZailtasuna());
 		}else {
@@ -453,7 +441,6 @@ public class Matrizea extends Observable{//EMA
 	//AURPEGIAREKIN
 	public void aurpegiaKlikatu(int zailtasuna) {
 		emanda=false;
-		panela.setNirePanela(null);
 		nireMatrizea1=null;
 		amaiera=false;
 		jokoBerriaHasieratu(zailtasuna);
