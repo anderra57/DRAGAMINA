@@ -133,7 +133,9 @@ public class Kontroladore implements ActionListener, Observer{
 			public void mouseClicked(MouseEvent arg0){
 				if(m.getAmaiera()) {
 					panela.setVisible(false);
-					IrabazlePanela.getNireIrabazlePanela().setVisible(true);
+					//IrabazlePanela.getNireIrabazlePanela().setVisible(true);
+					BerriroJokatu berriz = new BerriroJokatu();
+					berriz.setVisible(true);
 				}else {
 						aurpegianKlikEgin(m.getZailtasuna());
 					
@@ -278,7 +280,6 @@ public class Kontroladore implements ActionListener, Observer{
 					panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
 					panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n-.gif"));
 					panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n-.gif"));
-					
 				}else if(arg1 instanceof CasillaHutsa) {
 					label.setIcon(new ImageIcon("res/c0.gif"));
 					

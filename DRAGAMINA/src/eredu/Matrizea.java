@@ -252,6 +252,7 @@ public class Matrizea extends Observable{//EMA
 					minakPantailaratu();
 					lab.setIcon(new ImageIcon("res/mina-r.gif"));
 					bukatua=true;	
+					amaiera=true;
 				}else if(c instanceof CasillaHutsa){//balioa= 0 bada, lauki horretan hutsune bat dago, ondorioz, matrizea
 						MatrizeaZabaldu(c);
 				}else{
