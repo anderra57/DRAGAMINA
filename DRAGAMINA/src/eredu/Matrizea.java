@@ -48,6 +48,7 @@ public class Matrizea extends Observable{//EMA
 	private Matrizea() {
 		emanda = false;
 		bukatua=false;
+		amaiera=false;
 	}
 	
 	public static Matrizea getNireMatrizea1(){
@@ -59,6 +60,9 @@ public class Matrizea extends Observable{//EMA
 		
 	
 	///////////////////////////GETTERS AND SETTERS//////////////////////////////////
+	public void setPanela(Matrizea panel) {
+		nireMatrizea1 = panel;
+	}
 	public void seti(int i) {
 		errenkada=i;
 	}
@@ -212,6 +216,7 @@ public class Matrizea extends Observable{//EMA
 						matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
 						zenbakiakJarri();
 						emanda=true;
+						System.out.println(jokalariarenIzena);
 				}
 				Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
 				if (c.getEgoera() == 2 || c.getEgoera()==3) {
@@ -460,19 +465,15 @@ public class Matrizea extends Observable{//EMA
 		public void menuaAukeratu(int zein) {
 			amaiera=false;
 			if(zein==1) {
-				emanda=false;
 				nireMatrizea1=null;
 				jokoBerriaHasieratu(1);
 			}else if(zein==2) {
-				emanda=false;
 				nireMatrizea1=null;
 				jokoBerriaHasieratu(2);
 			}else if(zein==3) {
-				emanda=false;
 				nireMatrizea1=null;
 				jokoBerriaHasieratu(3);
 			}else if(zein==4){
-				emanda=false;
 				nireMatrizea1=null;
 				jokoBerriaHasieratu(getZailtasuna());
 			}else {
@@ -485,11 +486,9 @@ public class Matrizea extends Observable{//EMA
 		}
 	
 		//////////////////AURPEGIAREN KLIKATZEN BADUGU///////////////////////////
-		public void aurpegiaKlikatu(int zailtasuna) {
-			emanda=false;
-			nireMatrizea1=null;
-			amaiera=false;
+		public void aurpegiaKlikatu(int zailtasuna,String izena) {
 			jokoBerriaHasieratu(zailtasuna);
+			setIzena(izena);
 		}
 	
 		//////////////////LEHEN ALDIZ HASIERATZEN BADUGU, HASIERAKETA KLASEAREKIN/////////////////////////

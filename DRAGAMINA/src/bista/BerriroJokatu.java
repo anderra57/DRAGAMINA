@@ -16,9 +16,12 @@ import java.awt.event.ActionEvent;
 public class BerriroJokatu extends JDialog {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * Launch the application.
 	 */
-	private String izena;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -52,7 +55,7 @@ public class BerriroJokatu extends JDialog {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Kontroladore k = new Kontroladore();
-				k.aurpegianKlikEgin(Matrizea.getNireMatrizea1().getZailtasuna(),izena);
+				k.aurpegianKlikEgin(Matrizea.getNireMatrizea1().getZailtasuna(),Matrizea.getNireMatrizea1().getIzena());
 				setVisible(false);
 			}
 		});
@@ -66,10 +69,6 @@ public class BerriroJokatu extends JDialog {
 		});
 		panel_1.add(btnNewButton_1);
 
-	}
-	
-	public void setIzena(String iz) {
-		iz = izena;
 	}
 
 }
