@@ -132,7 +132,6 @@ public class Kontroladore implements ActionListener, Observer{
 			@Override
 			public void mouseClicked(MouseEvent arg0){
 				if(m.getAmaiera()) {
-					panela.setVisible(false);
 					BerriroJokatu berriz = new BerriroJokatu();
 					berriz.setVisible(true);
 				}else {
@@ -227,8 +226,17 @@ public class Kontroladore implements ActionListener, Observer{
 		panelSouth.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		irabazlePanela.setPanelSouth(panelSouth);
 		contentPane.add(irabazlePanela.getPanelSouth(), BorderLayout.SOUTH);
-		JLabel btnAurpegiIrab = new JLabel();
-		irabazlePanela.getPanelSouth().add(btnAurpegiIrab);
+		
+		JButton btnNewButton = new JButton("JARRAITU");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				IrabazlePanela.getNireIrabazlePanela().setVisible(false);
+				BerriroJokatu berriro = new BerriroJokatu();
+				berriro.setVisible(true);
+				
+			}
+		});
+		irabazlePanela.getPanelSouth().add(btnNewButton);
 	}
 
 	public void eguneratuMinaKont() {

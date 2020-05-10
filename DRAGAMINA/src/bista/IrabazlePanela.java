@@ -19,17 +19,7 @@ public class IrabazlePanela extends JFrame {
 
 	private IrabazlePanela() {
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.SOUTH);
-		
-		JButton btnNewButton = new JButton("JARRAITU");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				BerriroJokatu berriro = new BerriroJokatu();
-				berriro.setVisible(true);
-			}
-		});
-		panel.add(btnNewButton);}
+	}
 	
 	public static IrabazlePanela getNireIrabazlePanela() {
 		if(nirePanela==null) {
