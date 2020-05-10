@@ -11,8 +11,6 @@ import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
 
-import eredu.Matrizea;
-
 import javax.swing.JPanel;
 import javax.swing.JButton;
 //import javax.swing.JTextPane;
@@ -30,7 +28,7 @@ public class Hasieraketa extends JDialog {
 	private JTextField textField;
 	private JPanel panel_1;
 	private JLabel lblJokoarenZailtasunaAukeratuetik;
-	private JTextField textField_1;
+	private JTextField zailtasun_text;
 	private JPanel panel_2;
 	private JButton btnJarraitu;
 	private Action action;
@@ -86,7 +84,7 @@ public class Hasieraketa extends JDialog {
 		if (panel_1 == null) {
 			panel_1 = new JPanel();
 			panel_1.add(getLblJokoarenZailtasunaAukeratuetik());
-			panel_1.add(getTextField_1());
+			panel_1.add(getzailtasun_text());
 		}
 		return panel_1;
 	}
@@ -96,13 +94,13 @@ public class Hasieraketa extends JDialog {
 		}
 		return lblJokoarenZailtasunaAukeratuetik;
 	}
-	private JTextField getTextField_1() {
-		if (textField_1 == null) {
-			textField_1 = new JTextField();
-			textField_1.addActionListener(new TextField_1ActionListener());
-			textField_1.setColumns(10);
+	private JTextField getzailtasun_text() {
+		if (zailtasun_text == null) {
+			zailtasun_text = new JTextField();
+			zailtasun_text.addActionListener(new zailtasun_textActionListener());
+			zailtasun_text.setColumns(10);
 		}
-		return textField_1;
+		return zailtasun_text;
 	}
 	private JPanel getPanel_2() {
 		if (panel_2 == null) {
@@ -118,7 +116,7 @@ public class Hasieraketa extends JDialog {
 		}
 		return btnJarraitu;
 	}
-	private class TextField_1ActionListener implements ActionListener {
+	private class zailtasun_textActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {//Hau exekutatuko da zailtasun panelean intro sakatzean
 			botoiaEdoIntroEmatean();
 		}
@@ -139,21 +137,21 @@ public class Hasieraketa extends JDialog {
 	public void botoiaEdoIntroEmatean() { // Kodea birritan ez errepikatzeko sortu dugu metodo hau.
 		if(textField.getText().equals("")){//izena ez bada sartzen
 			JOptionPane.showMessageDialog(textField, "Ez duzu izenik sartu");
-		}else if((textField_1.getText().equals("1"))||(textField_1.getText().equals("2"))||(textField_1.getText().equals("3"))){
+		}else if((zailtasun_text.getText().equals("1"))||(zailtasun_text.getText().equals("2"))||(zailtasun_text.getText().equals("3"))){
 			setVisible(false);
 			Kontroladore k = new Kontroladore();
-			if(textField_1.getText().equals("1")) { // Matrizearen zailtasuna = 1 denenan
+			if(zailtasun_text.getText().equals("1")) { // Matrizearen zailtasuna = 1 denenan
 				k.jokoaLehenAldizHasieratu(1, textField.getText());
 			}
-			else if(textField_1.getText().equals("2")) { // Matrizearen zailtasuna = 2 denenan
+			else if(zailtasun_text.getText().equals("2")) { // Matrizearen zailtasuna = 2 denenan
 				k.jokoaLehenAldizHasieratu(2, textField.getText());
 			}
-			else if(textField_1.getText().equals("3")) { // Matrizearen zailtasuna = 3 denenan
+			else if(zailtasun_text.getText().equals("3")) { // Matrizearen zailtasuna = 3 denenan
 				k.jokoaLehenAldizHasieratu(3, textField.getText());
 			}
 		}else{//zailtasunean {1,2,3} zenbakirik sartzen ez bada
-				JOptionPane.showMessageDialog(textField_1, "Sartutako balioa ez da egokia");
-				textField_1.setText("");
+				JOptionPane.showMessageDialog(zailtasun_text, "Sartutako balioa ez da egokia");
+				zailtasun_text.setText("");
 		}
 	}
 	

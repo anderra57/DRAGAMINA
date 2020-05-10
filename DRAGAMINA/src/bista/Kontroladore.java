@@ -133,9 +133,10 @@ public class Kontroladore implements ActionListener, Observer{
 			public void mouseClicked(MouseEvent arg0){
 				if(m.getAmaiera()) {
 					BerriroJokatu berriz = new BerriroJokatu();
+					berriz.setIzena(Matrizea.getNireMatrizea1().getIzena());
 					berriz.setVisible(true);
 				}else {
-						aurpegianKlikEgin(m.getZailtasuna());
+						aurpegianKlikEgin(m.getZailtasuna(),m.getIzena());
 					
 				}
 			}
@@ -375,7 +376,7 @@ public class Kontroladore implements ActionListener, Observer{
 	
 	
 	///////////////////JOKOA BERRIZ ERE HASI(AURPEGIA)/////////////////////////
-	public void aurpegianKlikEgin(int zailtasuna) { //aurpegia klikatzen denean, joko berria hasieratuko da
+	public void aurpegianKlikEgin(int zailtasuna, String izena) { //aurpegia klikatzen denean, joko berria hasieratuko da
 		panela.setVisible(false);
 		panela.setNirePanela(null);
 		if(zailtasuna==1) {

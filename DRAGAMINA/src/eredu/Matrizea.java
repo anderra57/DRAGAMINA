@@ -25,6 +25,8 @@ import bista.IrabazlePanela;
 
 public class Matrizea extends Observable{//EMA
 	
+	
+	//////////////////////////ATRIBUTUAK//////////////////////////////
 	private Casilla[][] matrizea;
 	private static Matrizea nireMatrizea1 = null;
 	private static int errenkada;
@@ -34,13 +36,15 @@ public class Matrizea extends Observable{//EMA
 	private HashSet<Integer> begiratuak;
 	private int kasillaOnak;//minarik ez duten kasilla kopurua
 	private static int zailtasuna;
-	private static boolean emanda;//
+	private static boolean emanda;//boolear hau erailiko dugu jakiteko ea matrizean lehen aldiz klikatu den ala ez
 	private static boolean bukatua;//
 	private static boolean amaiera;//
 	private long partidaHasiera;
 	private String jokalariarenIzena;
 	private static ArrayList<Integer> listaBanderak;
 	
+	
+	//////////////////////////ERAIKITZAILEAK//////////////////////////////
 	private Matrizea() {
 		emanda = false;
 		bukatua=false;
@@ -52,10 +56,9 @@ public class Matrizea extends Observable{//EMA
 		}
 		return nireMatrizea1;
 	}
+		
 	
-	
-	//////////GETTER AND SETTER//////////
-	
+	///////////////////////////GETTERS AND SETTERS//////////////////////////////////
 	public void seti(int i) {
 		errenkada=i;
 	}
@@ -83,6 +86,7 @@ public class Matrizea extends Observable{//EMA
 	public void setZailtasuna(int zenbakia) {
 		zailtasuna=zenbakia;
 		minaKop=zailtasuna*zutabea;
+		minaKop=4;
 	}
 	
 	public int getZailtasuna() {
@@ -96,6 +100,10 @@ public class Matrizea extends Observable{//EMA
 	
 	public void setIzena(String s) {
 		jokalariarenIzena=s;
+	}
+	
+	public String getIzena() {
+		return jokalariarenIzena;
 	}
 	
 	public ArrayList<Integer> getListaBanderak(){
@@ -114,248 +122,256 @@ public class Matrizea extends Observable{//EMA
 		return minaKop;
 	}
 	
-	/////////////BESTE METODO BATZUK////////////////
-
-	//METODO HAU ERABILIKO DA, KOORDENATU BATZUK EMANDA, JAKITEKO ZEIN POSIZIOTAN DAGOEN,
-	//HORRELA, INTERFAZEKO LISTALABELETAN ERREZAGOA IZANGO DA GUZTIA BILATZEA
-	private int pos(int x, int y) {
-		return(zutabea*x+y);
-	}
 	
-	public void kasillaOnakBatKendu() {
-		kasillaOnak--;
-	}	
+	//////////////////////////MATRIZEAREN HASIERAKETAK ETA ZENBAKIAK JARRI//////////////////////////
 	
-	///////////////MATRIZEA HASIERATU////////////////
-	
-	//INTERFAZE GRAFIKOKO KASILLA BAT LEHEN ALDIZ KLIKATZEN DENEAN, METODO HAU ERABILIKO DA MATRIZEA HASIERATZEKO
-	public void matrizeaSortu(int e, int z) {//Hemen e eta z, klikatu dugun lehenengo kasillaren koordenatuak dira
-		CasillaFactory cf = CasillaFactory.getNireCasillaFactory();
-		listaBanderak=new ArrayList<Integer>();
-		listaMinak = new ArrayList<Integer>();
-		kasillaOnak = (errenkada*zutabea)-minaKop;//atributu honetan, mina ez duten kasilla kopurua gordeko da
-		begiratuak = new HashSet<Integer>();
-		matrizea = new Casilla[errenkada][zutabea];
-		
-		for(int i=0;i<errenkada;i++) {
-			for(int j=0;j<zutabea;j++) {
-				matrizea[i][j]=cf.casillaSortu(0, i, j);
+		//////////////////////////MATRIZEA SORTU//////////////////////////
+		//INTERFAZE GRAFIKOKO KASILLA BAT LEHEN ALDIZ KLIKATZEN DENEAN, METODO HAU ERABILIKO DA MATRIZEA HASIERATZEKO
+		public void matrizeaSortu(int e, int z) {//Hemen e eta z, klikatu dugun lehenengo kasillaren koordenatuak dira
+			CasillaFactory cf = CasillaFactory.getNireCasillaFactory();
+			listaBanderak=new ArrayList<Integer>();
+			listaMinak = new ArrayList<Integer>();
+			kasillaOnak = (errenkada*zutabea)-minaKop;//atributu honetan, mina ez duten kasilla kopurua gordeko da
+			begiratuak = new HashSet<Integer>();
+			matrizea = new Casilla[errenkada][zutabea];
+			
+			for(int i=0;i<errenkada;i++) {
+				for(int j=0;j<zutabea;j++) {
+					matrizea[i][j]=cf.casillaSortu(0, i, j);
+				}
 			}
-		}
-		Random rand = new Random();
-		int kont = minaKop;
-		while(kont>0) {
-			int i = rand.nextInt(errenkada);
-			int j = rand.nextInt(zutabea);
-			Casilla c = matrizea[i][j];
-			//HEMEN, MINA BAT JARRIKO DA, BAINA POSIZIO HORRETAN MINA BAT BADAGO, BESTE POSIZIO BAT BILATU BEHARKO DA
-			//EZIN DA MINARIK JARRI LEHEN ALDIZ KLIKATU DUGUN KASILLA, AZKEN BATEAN, HORI EGITEN BADA, INTERFAZEAN
-			//LEHEN ALDIZ KLIKATZEAN, PARTIDA GALTZEKO AUKERA EGONGO ZELAKO
-			while(c instanceof CasillaMina || (i==e && j==z)) {
-				i = rand.nextInt(errenkada);
-				j = rand.nextInt(zutabea);
-				c = matrizea[i][j];
-			}
-			matrizea[i][j] = cf.casillaSortu(-1, i, j);//matrizean, mina bakoitzari -1 balioa emango diegu
-			kont--;
-			listaMinak.add(pos(i,j));//hemen, mina lista bat sortuko dugu, geroago beste metodo batean erabiltzeko
-		}
-	}
-	
-	//BEHIN MATRIZEA HASIERATU DELA, METODO HAU ERABILIKO DUGU, MINA AUZIKIDEAK AURKITZEKO
-	public void zenbakiakJarri() {
-		CasillaFactory cf = CasillaFactory.getNireCasillaFactory();
-		for(int i = 0; i<errenkada; i++) {
-			for(int j=0; j<zutabea; j++) {
+			Random rand = new Random();
+			int kont = minaKop;
+			while(kont>0) {
+				int i = rand.nextInt(errenkada);
+				int j = rand.nextInt(zutabea);
 				Casilla c = matrizea[i][j];
-				if(!(c instanceof CasillaMina)) {//lehen esan den bezala, matrizearen posizio bateko balio -1 bada, mina bat da
-					int zenbat = zenbatMinaInguruan(i,j);
-					if(zenbat!=0) {
-						matrizea[i][j]=cf.casillaSortu(zenbat,i,j);
-					}
-				}	
+				//HEMEN, MINA BAT JARRIKO DA, BAINA POSIZIO HORRETAN MINA BAT BADAGO, BESTE POSIZIO BAT BILATU BEHARKO DA
+				//EZIN DA MINARIK JARRI LEHEN ALDIZ KLIKATU DUGUN KASILLA, AZKEN BATEAN, HORI EGITEN BADA, INTERFAZEAN
+				//LEHEN ALDIZ KLIKATZEAN, PARTIDA GALTZEKO AUKERA EGONGO ZELAKO
+				while(c instanceof CasillaMina || (i==e && j==z)) {
+					i = rand.nextInt(errenkada);
+					j = rand.nextInt(zutabea);
+					c = matrizea[i][j];
+				}
+				matrizea[i][j] = cf.casillaSortu(-1, i, j);//matrizean, mina bakoitzari -1 balioa emango diegu
+				kont--;
+				listaMinak.add(pos(i,j));//hemen, mina lista bat sortuko dugu, geroago beste metodo batean erabiltzeko
 			}
 		}
-	}
-	
-	private int zenbatMinaInguruan(int i, int j) {
-		//---------
-		//| 1 2 3 |
-		//| 4 X 5 |
-		//| 6 7 8 |
-		//---------
-		//bi for hauek hurrengoa egingo dute, begiratzen ari garen posizioa 'X' karakterea duena da, eta hurrengo
-		//ordenean bigatuko dira--> 1etik 8ra. Hasiko da i-1 eta j-1 posizioa begiratzen(goiko irudian 1 posizioa)
-		//ondoren i-1 j, gero i-1 j+1... eta horrela 8.posiziora iritsi arte(i+1 j+1 posizioa(goiko irudian 8 posizioa))
-		int kop=0;	
-		for(int x = i-1;x<=i+1;x++) {
-			for(int y = j-1; y<=j+1;y++) {
-				if(x<0 || y<0 || y>zutabea-1 || x>errenkada-1) {
-					//matrizetik kanpo dago
-				}else {
-					Casilla c = matrizea[x][y];
-					if(c instanceof CasillaMina) {
-						kop++;
-					}
+		
+		//////////////////////////ZENBAKIAK JARRI////////////////////////////
+		public void zenbakiakJarri() {
+			CasillaFactory cf = CasillaFactory.getNireCasillaFactory();
+			for(int i = 0; i<errenkada; i++) {
+				for(int j=0; j<zutabea; j++) {
+					Casilla c = matrizea[i][j];
+					if(!(c instanceof CasillaMina)) {//lehen esan den bezala, matrizearen posizio bateko balio -1 bada, mina bat da
+						int zenbat = zenbatMinaInguruan(i,j);
+						if(zenbat!=0) {
+							matrizea[i][j]=cf.casillaSortu(zenbat,i,j);
+						}
+					}	
 				}
 			}
 		}
-		return kop;
-	}
-	
-	
-	/////////////MATRIZEA ZABALDU///////////////
-	
-	//LAUKI HUTS BAT KLIKATZEN DUGUNEAN, METODO HAU ERABILIKO DA, ERREKURTSIBOKI, BESTE KASILLAK IREKITZEKO
-	public void MatrizeaZabaldu(Casilla k){//Metodo hau, kasilla huts bat pultsatu ondoren exekutatuko da
-		Queue<Casilla> begiratuGabe = new LinkedList<Casilla>();
-		Casilla kasilla=k;
-		int i,j;
-		begiratuak.add(pos(kasilla.geti(),kasilla.getj()));//klikatu dugun kasilla sartuko dugu listan berriro ere
-		//ez begiratzeko
-		begiratuGabe.add(k);
-		while(!begiratuGabe.isEmpty()) {
-			kasilla=begiratuGabe.remove();
-			kasillaOnakBatKendu();
-			kasilla.egoeraAldatu(0);
-			i = kasilla.geti();
-			j = kasilla.getj();
-			zabaldu(pos(i,j),kasilla.getBalioa());//laukiaren balioa bistaratuko dugu panelea
-			if(kasilla instanceof CasillaHutsa) {
-				for(int x = i-1;x<=i+1;x++) {//goiko metodoan erabili den for berdina da
-					for(int y = j-1; y<=j+1;y++) {
-						if(x<0 || y<0 || y>zutabea-1 || x>errenkada-1) {
-							//matrizetik kanpo dago
-						}else {
-							if(!begiratuak.contains(pos(x,y))){
-								Casilla unek = matrizea[x][y];
-								begiratuGabe.add(unek); 
-								begiratuak.add(pos(x,y));
-							}
+		
+		private int zenbatMinaInguruan(int i, int j) {
+			//---------
+			//| 1 2 3 |
+			//| 4 X 5 |
+			//| 6 7 8 |
+			//---------
+			//bi for hauek hurrengoa egingo dute, begiratzen ari garen posizioa 'X' karakterea duena da, eta hurrengo
+			//ordenean bigatuko dira--> 1etik 8ra. Hasiko da i-1 eta j-1 posizioa begiratzen(goiko irudian 1 posizioa)
+			//ondoren i-1 j, gero i-1 j+1... eta horrela 8.posiziora iritsi arte(i+1 j+1 posizioa(goiko irudian 8 posizioa))
+			int kop=0;	
+			for(int x = i-1;x<=i+1;x++) {
+				for(int y = j-1; y<=j+1;y++) {
+					if(x<0 || y<0 || y>zutabea-1 || x>errenkada-1) {
+						//matrizetik kanpo dago
+					}else {
+						Casilla c = matrizea[x][y];
+						if(c instanceof CasillaMina) {
+							kop++;
 						}
 					}
 				}
 			}
-		}	
-	}
+			return kop;
+		}
+		
 	
-	public void zabaldu(int num, int zenbat){
-	   	Casilla c = balioaBueltatu(num/zutabea, num%zutabea);
-	   	setChanged();
-	   	notifyObservers(c);
-	}
+	//////////////////////////CLICK EZKERRA ETA CLICK ESKUINA/////////////////////////
 	
-	//////////////KASILLA BAT KLIKATU////////////
-	public void clickEzkerra(int zenb, JLabel lab) {
-		if(!bukatua) {
-			int zenbakia = zenb;
-			if(!emanda){
+		/////////////////////CLICK EZKERRA///////////////////////
+		public void clickEzkerra(int zenb, JLabel lab) {
+			if(!bukatua) {
+				int zenbakia = zenb;
+				if(!emanda){
+						matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
+						zenbakiakJarri();
+						emanda=true;
+				}
+				Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
+				if (c.getEgoera() == 2 || c.getEgoera()==3) {
+					if(c instanceof CasillaMina){//balioa = -1 mina bat aurkitu dugu, ondorioz galdu dugu
+						c.egoeraAldatu(0);
+						minakPantailaratu();
+						lab.setIcon(new ImageIcon("res/mina-r.gif"));
+						bukatua=true;	
+						amaiera=true;
+					}else if(c instanceof CasillaHutsa){//balioa= 0 bada, lauki horretan hutsune bat dago, ondorioz, matrizea
+							MatrizeaZabaldu(c);
+					}else{
+							kasillaOnakBatKendu();
+							c.egoeraAldatu(0);
+							begiratuak.add(c.posizioa());
+							setChanged();
+							notifyObservers(c);
+					}
+				}
+				if(getKasillaOnak()==0) {
+					amaiera=true;
+					bukatua = true;
+					setChanged();
+					notifyObservers();
+					amaituPanela();
+				}
+			}
+		}
+		
+		/////////////////////CLICK ESKUINA///////////////////////
+		public void clickEskuina(int zenb, JLabel lab) {
+			if(!bukatua) {
+				int zenbakia = zenb;
+				if(!emanda){
 					matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
 					zenbakiakJarri();
 					emanda=true;
-			}
-			Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
-			if (c.getEgoera() == 2 || c.getEgoera()==3) {
-				if(c instanceof CasillaMina){//balioa = -1 mina bat aurkitu dugu, ondorioz galdu dugu
-					c.egoeraAldatu(0);
-					minakPantailaratu();
-					lab.setIcon(new ImageIcon("res/mina-r.gif"));
-					bukatua=true;	
-					amaiera=true;
-				}else if(c instanceof CasillaHutsa){//balioa= 0 bada, lauki horretan hutsune bat dago, ondorioz, matrizea
-						MatrizeaZabaldu(c);
-				}else{
-						kasillaOnakBatKendu();
-						c.egoeraAldatu(0);
-						begiratuak.add(c.posizioa());
+				}
+				Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
+				if(c.getEgoera() == 1) { //bandera kendu
+						c.egoeraAldatu(3); //galdera ikurra
+						eguneratuMinaKont(false);
 						setChanged();
 						notifyObservers(c);
+						listaBanderak.remove(listaBanderak.indexOf(zenbakia));
 				}
-			}
-			if(getKasillaOnak()==0) {
-				amaiera=true;
-				bukatua = true;
-				setChanged();
-				notifyObservers();
-				amaituPanela();
-			}
-		}
-	}
-	
-	public void clickEskuina(int zenb, JLabel lab) {
-		if(!bukatua) {
-			int zenbakia = zenb;
-			if(!emanda){
-				matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
-				zenbakiakJarri();
-				emanda=true;
-			}
-			Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
-			if(c.getEgoera() == 1) { //bandera kendu
-					c.egoeraAldatu(3); //galdera ikurra
-					eguneratuMinaKont(false);
+				else if (c.getEgoera() == 2) { //bandera kokatu
+					c.egoeraAldatu(1); //bandera
+					eguneratuMinaKont(true);
 					setChanged();
 					notifyObservers(c);
-					listaBanderak.remove(listaBanderak.indexOf(zenbakia));
-			}
-			else if (c.getEgoera() == 2) { //bandera kokatu
-				c.egoeraAldatu(1); //bandera
-				eguneratuMinaKont(true);
-				setChanged();
-				notifyObservers(c);
-				listaBanderak.add(zenbakia);
-			}else{//galdera ikurra klikatu dugu
-				c.egoeraAldatu(2); //itxita	
-				setChanged();
-				notifyObservers(c);
+					listaBanderak.add(zenbakia);
+				}else{//galdera ikurra klikatu dugu
+					c.egoeraAldatu(2); //itxita	
+					setChanged();
+					notifyObservers(c);
+				}
 			}
 		}
-	}
 	
-	//HEMEN, TRUE EMATEN BADU, BAKARRIK MINAK ESTALITA DAUDELA ETA PARTIDA IRABAZI DELA
-	public boolean kasillaOnakHutsik() {
-		if(kasillaOnak==0) {
-			return true;
-		}else {
-			return false;
+	
+	//////////////////////////MATRIZEA ZABALDU(KASILLA HUTSAN KLIK EGINEZ GERO)///////////////////////////
+	
+		//LAUKI HUTS BAT KLIKATZEN DUGUNEAN, METODO HAU ERABILIKO DA, ERREKURTSIBOKI, BESTE KASILLAK IREKITZEKO
+		public void MatrizeaZabaldu(Casilla k){//Metodo hau, kasilla huts bat pultsatu ondoren exekutatuko da
+			Queue<Casilla> begiratuGabe = new LinkedList<Casilla>();
+			Casilla kasilla=k;
+			int i,j;
+			begiratuak.add(pos(kasilla.geti(),kasilla.getj()));//klikatu dugun kasilla sartuko dugu listan berriro ere
+			//ez begiratzeko
+			begiratuGabe.add(k);
+			while(!begiratuGabe.isEmpty()) {
+				kasilla=begiratuGabe.remove();
+				kasillaOnakBatKendu();
+				kasilla.egoeraAldatu(0);
+				i = kasilla.geti();
+				j = kasilla.getj();
+				zabaldu(pos(i,j),kasilla.getBalioa());//laukiaren balioa bistaratuko dugu panelea
+				if(kasilla instanceof CasillaHutsa) {
+					for(int x = i-1;x<=i+1;x++) {//goiko metodoan erabili den for berdina da
+						for(int y = j-1; y<=j+1;y++) {
+							if(x<0 || y<0 || y>zutabea-1 || x>errenkada-1) {
+								//matrizetik kanpo dago
+							}else {
+								if(!begiratuak.contains(pos(x,y))){
+									Casilla unek = matrizea[x][y];
+									begiratuGabe.add(unek); 
+									begiratuak.add(pos(x,y));
+								}
+							}
+						}
+					}
+				}
+			}	
 		}
-	}
-	
-	
-	public void minakPantailaratu(){
-		Iterator<Integer> it=listaMinak.iterator();
-		int pos;
-		while(it.hasNext()){
-			pos=it.next();
-			Casilla c = this.balioaBueltatu(pos/zutabea, pos%zutabea);
-			c.egoeraAldatu(0);
-			setChanged();
-			notifyObservers(c);
+		
+		public void zabaldu(int num, int zenbat){
+		   	Casilla c = balioaBueltatu(num/zutabea, num%zutabea);
+		   	setChanged();
+		   	notifyObservers(c);
 		}
-	}
+		
+		
+	//////////////////////////MINAK BISTARATU(KASILLA MINADUNA KLIKATZEN BADUGU)/////////////////////
+		public void minakPantailaratu(){
+			Iterator<Integer> it=listaMinak.iterator();
+			int pos;
+			while(it.hasNext()){
+				pos=it.next();
+				Casilla c = this.balioaBueltatu(pos/zutabea, pos%zutabea);
+				c.egoeraAldatu(0);
+				setChanged();
+				notifyObservers(c);
+			}
+		}
+		
 	
-	
-	public void eguneratuMinaKont(boolean arg0) {
-		if(arg0) {
-			minaKop--;}
-		else {
-			minaKop++;
-		} 	
-	}
-	
-	public int bilatu(JLabel[] a,JLabel j){
-		// metodo hau erabiliko dugu, lauki bat click egitean, jakiteko zein 
-		// posiziotan dagoen, horrela M  atrizea metodoan dagoen balioaBueltatu
-		// metodoari esker, lauki horren balioa jakingo dugu
-		return Arrays.asList(a).indexOf(j);
-	}
-	
-	/////////////// AMAIERAKO METODOAK //////////////
-	
+		
+	//////////////////////////BESTE METODO BATZUK//////////////////////////
+		//METODO HAU ERABILIKO DA, KOORDENATU BATZUK EMANDA, JAKITEKO ZEIN POSIZIOTAN DAGOEN,
+		//HORRELA, INTERFAZEKO LISTALABELETAN ERREZAGOA IZANGO DA GUZTIA BILATZEA
+		private int pos(int x, int y) {
+			return(zutabea*x+y);
+		}
+		
+		public void kasillaOnakBatKendu() {
+			kasillaOnak--;
+		}	
+		
+		//HEMEN, TRUE EMATEN BADU, BAKARRIK MINAK ESTALITA DAUDELA ETA PARTIDA IRABAZI DELA
+		public boolean kasillaOnakHutsik() {
+			if(kasillaOnak==0) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+		
+		public void eguneratuMinaKont(boolean arg0) {
+			if(arg0) {
+				minaKop--;}
+			else {
+				minaKop++;
+			} 	
+		}
+		
+		public int bilatu(JLabel[] a,JLabel j){
+			// metodo hau erabiliko dugu, lauki bat click egitean, jakiteko zein 
+			// posiziotan dagoen, horrela M  atrizea metodoan dagoen balioaBueltatu
+			// metodoari esker, lauki horren balioa jakingo dugu
+			return Arrays.asList(a).indexOf(j);
+		}
+		
+		
+	//////////////////////////IRABAZIZ GERO, EXEKUTATUKO METODOAK/////////////////////////////
 	public void amaituPanela() {
 		sartuListaIrabazlean();
 		IrabazlePanela.getNireIrabazlePanela().setVisible(true);	
 	}
+	
 	
 	public void sartuListaIrabazlean() {
 		// PUNTUAZIO SISTEMA: (zailtasuna * zutabeKop * errenkadaKop * pi * 1.000.000 / partidarenIraupena_milisegundotan)-ren borobilketa osoa.
@@ -422,66 +438,8 @@ public class Matrizea extends Observable{//EMA
 		catch(IOException e) {System.out.println("Arazoa egon da \"irabazleak.txt\" fitxategia berridaztean.");}
 	}
 	
-	//////////////PARTIDAK BERRIRO HASI///////////////
-	//HEMEN PARTIDA BERRIZ ERE HASTEKO DAUDEN AUKEREN INPLEMENTAZIOAK AGERTZEN DIRA
 	
-	//MENUAREKIN
-	public void menuaAukeratu(int zein) {
-		amaiera=false;
-		if(zein==1) {
-			emanda=false;
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(1);
-		}else if(zein==2) {
-			emanda=false;
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(2);
-		}else if(zein==3) {
-			emanda=false;
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(3);
-		}else if(zein==4){
-			emanda=false;
-			nireMatrizea1=null;
-			jokoBerriaHasieratu(getZailtasuna());
-		}else {
-			try {
-				Desktop.getDesktop().browse(new File("res/info.html").toURI());
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-	
-	//AURPEGIAREKIN
-	public void aurpegiaKlikatu(int zailtasuna) {
-		emanda=false;
-		nireMatrizea1=null;
-		amaiera=false;
-		jokoBerriaHasieratu(zailtasuna);
-	}
-	
-	//PARTIDA LEHEN ALDIZ HASIERATU
-	public void hasierakeraBotoia(int zailtasuna, String izena) {
-		if(zailtasuna==1) {
-			seti(7);
-			setj(10);
-			setZailtasuna(1);	
-			setIzena(izena);
-		}else if(zailtasuna==2) {
-			seti(10);
-			setj(15);// Hemen, zailtasun bakoitzari identifikatzaile bat jarriko dugu, gero
-			// Kontroladore klaseko metodo batetan erabiltzeko
-			setZailtasuna(2);
-			setIzena(izena);
-		}else {
-			seti(12);
-			setj(25);
-			setZailtasuna(3);
-			setIzena(izena);
-		}
-	}
-	
+	//////////////////////////PARTIDAK BERRIZ ERE HASIERATU/////////////////////////////////
 	public void jokoBerriaHasieratu(int zenbakia) {
 		if(zenbakia==1) {
 			seti(7);
@@ -497,4 +455,62 @@ public class Matrizea extends Observable{//EMA
 			setZailtasuna(3);
 		}
 	}
+		
+		//////////////////MENUAREKIN HASIERATZEN BADUGU////////////////////////
+		public void menuaAukeratu(int zein) {
+			amaiera=false;
+			if(zein==1) {
+				emanda=false;
+				nireMatrizea1=null;
+				jokoBerriaHasieratu(1);
+			}else if(zein==2) {
+				emanda=false;
+				nireMatrizea1=null;
+				jokoBerriaHasieratu(2);
+			}else if(zein==3) {
+				emanda=false;
+				nireMatrizea1=null;
+				jokoBerriaHasieratu(3);
+			}else if(zein==4){
+				emanda=false;
+				nireMatrizea1=null;
+				jokoBerriaHasieratu(getZailtasuna());
+			}else {
+				try {
+					Desktop.getDesktop().browse(new File("res/info.html").toURI());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	
+		//////////////////AURPEGIAREN KLIKATZEN BADUGU///////////////////////////
+		public void aurpegiaKlikatu(int zailtasuna) {
+			emanda=false;
+			nireMatrizea1=null;
+			amaiera=false;
+			jokoBerriaHasieratu(zailtasuna);
+		}
+	
+		//////////////////LEHEN ALDIZ HASIERATZEN BADUGU, HASIERAKETA KLASEAREKIN/////////////////////////
+		public void hasierakeraBotoia(int zailtasuna, String izena) {
+			if(zailtasuna==1) {
+				seti(7);
+				setj(10);
+				setZailtasuna(1);	
+				setIzena(izena);
+			}else if(zailtasuna==2) {
+				seti(10);
+				setj(15);// Hemen, zailtasun bakoitzari identifikatzaile bat jarriko dugu, gero
+				// Kontroladore klaseko metodo batetan erabiltzeko
+				setZailtasuna(2);
+				setIzena(izena);
+			}else {
+				seti(12);
+				setj(25);
+				setZailtasuna(3);
+				setIzena(izena);
+			}
+		}
+	
 }
