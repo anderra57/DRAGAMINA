@@ -3,6 +3,10 @@ package bista;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class IrabazlePanela extends JFrame {
 
@@ -13,7 +17,19 @@ public class IrabazlePanela extends JFrame {
 	JLabel lblIzena_1, lblIzena_2, lblIzena_3, lblIzena_4, lblIzena_5, lblIzena_6, lblIzena_7, lblIzena_8, lblIzena_9, lblIzena_10;
 	JLabel lblPunt_1, lblPunt_2, lblPunt_3, lblPunt_4, lblPunt_5, lblPunt_6, lblPunt_7, lblPunt_8, lblPunt_9, lblPunt_10;
 
-	private IrabazlePanela() {}
+	private IrabazlePanela() {
+		
+		JPanel panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.SOUTH);
+		
+		JButton btnNewButton = new JButton("JARRAITU");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BerriroJokatu berriro = new BerriroJokatu();
+				berriro.setVisible(true);
+			}
+		});
+		panel.add(btnNewButton);}
 	
 	public static IrabazlePanela getNireIrabazlePanela() {
 		if(nirePanela==null) {

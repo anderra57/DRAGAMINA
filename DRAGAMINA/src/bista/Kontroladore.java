@@ -133,7 +133,6 @@ public class Kontroladore implements ActionListener, Observer{
 			public void mouseClicked(MouseEvent arg0){
 				if(m.getAmaiera()) {
 					panela.setVisible(false);
-					//IrabazlePanela.getNireIrabazlePanela().setVisible(true);
 					BerriroJokatu berriz = new BerriroJokatu();
 					berriz.setVisible(true);
 				}else {
@@ -266,13 +265,14 @@ public class Kontroladore implements ActionListener, Observer{
 	
 	
 	////////////////////OBSERVERREKO UPDATE-A////////////////////////
+	
 	public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla
 		Panela panela = Panela.getNirePanela();
 		
 		if(!m.getAmaiera()) {//kasilla klikatu dugu
-			JLabel label = listaCasillas[((Casilla)arg1).posizioa()];
+			JLabel label = listaCasillas[((Casilla)arg1).posizioa()];//LORTUKO DUGU KASILLA HORREN LABEL-A
 			
-			if(((Casilla)arg1).getEgoera()==0) {//Ireki dugu kasilla
+			if(((Casilla)arg1).getEgoera()==0) {//Ireki dugu kasilla(CLICK EZKERRA)
 				if(arg1 instanceof CasillaMina) {
 					panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara2.gif"));
 					banderakBegiratu();
@@ -290,7 +290,7 @@ public class Kontroladore implements ActionListener, Observer{
 			}else if(((Casilla)arg1).getEgoera()==1) {//bandera jarri dugu
 				eguneratuMinaKont();
 				label.setIcon(new ImageIcon("res/bandera.gif"));
-			}else if(((Casilla)arg1).getEgoera()==3) {//bandera jarri dugu
+			}else if(((Casilla)arg1).getEgoera()==3) {//BANDERA BATEN GAINEAN CLICK ESKUINA EGINEZ, GALDERA IKURRA ATERA
 				eguneratuMinaKont();
 				label.setIcon(new ImageIcon("res/marca.gif"));
 			}else {//bandera kendu dugu

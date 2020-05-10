@@ -30,6 +30,7 @@ public abstract class Casilla {
 		return balioa;
 	}
 	
+	//KASILLAREN EGOERA ALDATZKEO
 	public void egoeraAldatu(int zenbakia) {
 		switch(zenbakia) {
 		case 0:
@@ -47,6 +48,7 @@ public abstract class Casilla {
 		}
 	}
 	
+	//KASILLAREN EGOERA ZEIN DEN JAKITEKO
 	public int getEgoera() {
 		if(egoera instanceof Irekita) {
 			return 0;

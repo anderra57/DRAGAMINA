@@ -34,9 +34,9 @@ public class Matrizea extends Observable{//EMA
 	private HashSet<Integer> begiratuak;
 	private int kasillaOnak;//minarik ez duten kasilla kopurua
 	private static int zailtasuna;
-	private static boolean emanda;
-	private static boolean bukatua;
-	private static boolean amaiera;
+	private static boolean emanda;//
+	private static boolean bukatua;//
+	private static boolean amaiera;//
 	private long partidaHasiera;
 	private String jokalariarenIzena;
 	private static ArrayList<Integer> listaBanderak;
@@ -83,6 +83,7 @@ public class Matrizea extends Observable{//EMA
 	public void setZailtasuna(int zenbakia) {
 		zailtasuna=zenbakia;
 		minaKop=zailtasuna*zutabea;
+		minaKop = 3;
 	}
 	
 	public int getZailtasuna() {
@@ -116,6 +117,8 @@ public class Matrizea extends Observable{//EMA
 	
 	/////////////BESTE METODO BATZUK////////////////
 
+	//METODO HAU ERABILIKO DA, KOORDENATU BATZUK EMANDA, JAKITEKO ZEIN POSIZIOTAN DAGOEN,
+	//HORRELA, INTERFAZEKO LISTALABELETAN ERREZAGOA IZANGO DA GUZTIA BILATZEA
 	private int pos(int x, int y) {
 		return(zutabea*x+y);
 	}
@@ -125,6 +128,8 @@ public class Matrizea extends Observable{//EMA
 	}	
 	
 	///////////////MATRIZEA HASIERATU////////////////
+	
+	//INTERFAZE GRAFIKOKO KASILLA BAT LEHEN ALDIZ KLIKATZEN DENEAN, METODO HAU ERABILIKO DA MATRIZEA HASIERATZEKO
 	public void matrizeaSortu(int e, int z) {//Hemen e eta z, klikatu dugun lehenengo kasillaren koordenatuak dira
 		CasillaFactory cf = CasillaFactory.getNireCasillaFactory();
 		listaBanderak=new ArrayList<Integer>();
@@ -144,6 +149,9 @@ public class Matrizea extends Observable{//EMA
 			int i = rand.nextInt(errenkada);
 			int j = rand.nextInt(zutabea);
 			Casilla c = matrizea[i][j];
+			//HEMEN, MINA BAT JARRIKO DA, BAINA POSIZIO HORRETAN MINA BAT BADAGO, BESTE POSIZIO BAT BILATU BEHARKO DA
+			//EZIN DA MINARIK JARRI LEHEN ALDIZ KLIKATU DUGUN KASILLA, AZKEN BATEAN, HORI EGITEN BADA, INTERFAZEAN
+			//LEHEN ALDIZ KLIKATZEAN, PARTIDA GALTZEKO AUKERA EGONGO ZELAKO
 			while(c instanceof CasillaMina || (i==e && j==z)) {
 				i = rand.nextInt(errenkada);
 				j = rand.nextInt(zutabea);
@@ -155,6 +163,7 @@ public class Matrizea extends Observable{//EMA
 		}
 	}
 	
+	//BEHIN MATRIZEA HASIERATU DELA, METODO HAU ERABILIKO DUGU, MINA AUZIKIDEAK AURKITZEKO
 	public void zenbakiakJarri() {
 		CasillaFactory cf = CasillaFactory.getNireCasillaFactory();
 		for(int i = 0; i<errenkada; i++) {
@@ -198,6 +207,7 @@ public class Matrizea extends Observable{//EMA
 	
 	/////////////MATRIZEA ZABALDU///////////////
 	
+	//LAUKI HUTS BAT KLIKATZEN DUGUNEAN, METODO HAU ERABILIKO DA, ERREKURTSIBOKI, BESTE KASILLAK IREKITZEKO
 	public void MatrizeaZabaldu(Casilla k){//Metodo hau, kasilla huts bat pultsatu ondoren exekutatuko da
 		Queue<Casilla> begiratuGabe = new LinkedList<Casilla>();
 		Casilla kasilla=k;
@@ -303,6 +313,7 @@ public class Matrizea extends Observable{//EMA
 		}
 	}
 	
+	//HEMEN, TRUE EMATEN BADU, BAKARRIK MINAK ESTALITA DAUDELA ETA PARTIDA IRABAZI DELA
 	public boolean kasillaOnakHutsik() {
 		if(kasillaOnak==0) {
 			return true;
@@ -310,6 +321,7 @@ public class Matrizea extends Observable{//EMA
 			return false;
 		}
 	}
+	
 	
 	public void minakPantailaratu(){
 		Iterator<Integer> it=listaMinak.iterator();
@@ -343,6 +355,7 @@ public class Matrizea extends Observable{//EMA
 	
 	public void amaituPanela() {
 		sartuListaIrabazlean();
+		IrabazlePanela.getNireIrabazlePanela().setVisible(true);
 	}
 	
 	public void sartuListaIrabazlean() {
@@ -411,6 +424,8 @@ public class Matrizea extends Observable{//EMA
 	}
 	
 	//////////////PARTIDAK BERRIRO HASI///////////////
+	//HEMEN PARTIDA BERRIZ ERE HASTEKO DAUDEN AUKEREN INPLEMENTAZIOAK AGERTZEN DIRA
+	
 	//MENUAREKIN
 	public void menuaAukeratu(int zein) {
 		amaiera=false;
