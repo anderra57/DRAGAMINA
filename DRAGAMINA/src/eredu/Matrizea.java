@@ -465,16 +465,12 @@ public class Matrizea extends Observable{//EMA
 		public void menuaAukeratu(int zein) {
 			amaiera=false;
 			if(zein==1) {
-				nireMatrizea1=null;
 				jokoBerriaHasieratu(1);
 			}else if(zein==2) {
-				nireMatrizea1=null;
 				jokoBerriaHasieratu(2);
 			}else if(zein==3) {
-				nireMatrizea1=null;
 				jokoBerriaHasieratu(3);
 			}else if(zein==4){
-				nireMatrizea1=null;
 				jokoBerriaHasieratu(getZailtasuna());
 			}else {
 				try {

@@ -119,11 +119,11 @@ public class Kontroladore implements ActionListener, Observer{
 			hasieratu();
 			m.aurpegiaKlikatu(zailtasuna,izena);
 		}else if(zailtasuna==2) {
-			m.aurpegiaKlikatu(zailtasuna,izena);
 			hasieratu();
+			m.aurpegiaKlikatu(zailtasuna,izena);
 		}else {
-			m.aurpegiaKlikatu(zailtasuna,izena);
 			hasieratu();
+			m.aurpegiaKlikatu(zailtasuna,izena);
 		}
 	}
 	
@@ -371,21 +371,28 @@ public class Kontroladore implements ActionListener, Observer{
 	////////////////////////////MENUAREN AUKERAKETA/////////////////////////
 		@Override
 		public void actionPerformed(ActionEvent e) { // Metodo hau daukagu menuaren edozein aukera click-atzen dugunean.
-			Matrizea m = Matrizea.getNireMatrizea1();
+			String izena = m.getIzena();
 			panela.setVisible(false);
 			panela.setNirePanela(null);
+			m.setPanela(null);
 			if(e.getSource()==panela.getMenu("erreza")) {
 				m.menuaAukeratu(1);
+				hasieratu();
 			}else if(e.getSource()==panela.getMenu("ertaina")) {
 				m.menuaAukeratu(2);
+				hasieratu();
 			}else if(e.getSource()==panela.getMenu("zaila")){
 				m.menuaAukeratu(3);
+				hasieratu();
 			}else if(e.getSource()==panela.getMenu("joku_berria")){
-				m.menuaAukeratu(4);			
+				m.menuaAukeratu(4);
+				hasieratu();
 			}else {
 				m.menuaAukeratu(5);
+				hasieratu();
 			}
-			hasieratu();
+			m.setIzena(izena);
+	
 		}
 		
 		
