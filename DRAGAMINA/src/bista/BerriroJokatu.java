@@ -16,10 +16,6 @@ import java.awt.event.ActionEvent;
 public class BerriroJokatu extends JDialog {
 
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/**
 	 * Launch the application.
 	 */
 	private String izena;

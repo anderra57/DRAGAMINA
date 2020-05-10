@@ -34,29 +34,11 @@ import eredu.Matrizea;
 
 public class Kontroladore implements ActionListener, Observer{
 	
-	Panela panela;
-	IrabazlePanela irabazlePanela;
-	Matrizea m = Matrizea.getNireMatrizea1();
-	JLabel[] listaCasillas;
-	private boolean bukatua = false;
 	
-	public Kontroladore() {
-		Matrizea.getNireMatrizea1().addObserver(this);
-		panela=Panela.getNirePanela();
-		irabazlePanela=IrabazlePanela.getNireIrabazlePanela();
-	}
 	
-	public void hasieratu() {
-		Matrizea.getNireMatrizea1().addObserver(this);
-		panela = Panela.getNirePanela();
-		irabazlePanela = IrabazlePanela.getNireIrabazlePanela();
-		panelaHasieratu();
-		menuaHasieratu();
-		panelGelaxkakHasieratu();
-		panelAurpegiHasieratu();
-		panelKontHasieratu();
-		panela.setVisible(true);
-	}
+	
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) { // Metodo hau daukagu menuaren edozein aukera click-atzen dugunean.
@@ -77,21 +59,7 @@ public class Kontroladore implements ActionListener, Observer{
 		hasieratu();
 	}
 	
-	public void panelaHasieratu() {
-		panela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		panela.setIconImage(Toolkit.getDefaultToolkit().getImage("res/icon.png"));
-		panela.setTitle("Dragamina");
-		panela.setLocationRelativeTo(null);
-		leihoarenTamaina(m.getZ());
-		JPanel contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		panela.setContentPane(contentPane);
-		panela.setVisible(true);
-		panela.setResizable(false);
-		panela.setLocationRelativeTo(null);
-		m.setpartidaHasiera(System.currentTimeMillis());
-	}
+	
 	
 	private void leihoarenTamaina(int z) {
 		if (z==10) {
@@ -105,23 +73,6 @@ public class Kontroladore implements ActionListener, Observer{
 		}
 	}
 	
-	private void menuaHasieratu(){
-		panela.getMenu("joku_berria").addActionListener(this);
-		panela.getMenu("erreza").addActionListener(this);
-		panela.getMenu("ertaina").addActionListener(this);
-		panela.getMenu("zaila").addActionListener(this);
-		panela.getMenu("esteka").addActionListener(this);
-	}
-
-	private void panelGelaxkakHasieratu(){
-		JPanel panelGelaxkak = new JPanel();
-		panelGelaxkak.setLayout(new GridBagLayout());
-		panela.setPanelGelaxkak(panelGelaxkak);
-		JLabel[] listaGelaxka = new JLabel[m.getE()*m.getZ()];
-		listaCasillas=listaGelaxka;		
-		sortu(m.getE(),m.getZ());		
-		panela.getContentPane().add(panela.getPanelGelaxkak(), BorderLayout.CENTER);
-	}
 	
 	
 	
@@ -158,24 +109,7 @@ public class Kontroladore implements ActionListener, Observer{
 		panela.getContentPane().add(panela.getPanelAurpegi(), BorderLayout.SOUTH);
 	}
 
-	private void panelKontHasieratu() {
-		JPanel panelKont = new JPanel();
-		JLabel minaKontZifra = new JLabel();
-		minaKontZifra.setIcon(new ImageIcon("res/n0.gif"));
-		JLabel minaKontZifra_1 = new JLabel();
-		minaKontZifra_1.setIcon(new ImageIcon("res/n0.gif"));
-		JLabel minaKontZifra_2 = new JLabel();
-		minaKontZifra_2.setIcon(new ImageIcon("res/n0.gif"));
-		panela.setminaKontZifra(minaKontZifra);
-		panela.setminaKontZifra_1(minaKontZifra_1);
-		panela.setminaKontZifra_2(minaKontZifra_2);
-		panelKont.add(panela.getminaKontZifra());
-		panelKont.add(panela.getminaKontZifra_1());
-		panelKont.add(panela.getminaKontZifra_2());
-		panela.setPanelKont(panelKont);
-		panela.getContentPane().add(panela.getPanelKont(), BorderLayout.NORTH);
-	}
-
+	
 	public void hasieratuIrabazlePanela() {
 		
 		irabazlePanela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -238,80 +172,6 @@ public class Kontroladore implements ActionListener, Observer{
 			}
 		});
 		irabazlePanela.getPanelSouth().add(btnNewButton);
-	}
-
-	public void eguneratuMinaKont() {
-		int mKop=m.getMinaKop();
-		if (mKop>=0) {
-			int hamarreko= mKop/10;
-			int bateko= mKop%10;
-			panela.getminaKontZifra().setIcon(new ImageIcon("res/n0.gif"));
-			panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
-			panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
-		}
-		else { mKop=-mKop;
-			int hamarreko= mKop/10;
-			int bateko= mKop%10;
-			panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
-			panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
-			panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
-		}
-	}
-	
-	public void banderakBegiratu() {
-		Iterator<Integer> it=m.getListaBanderak().iterator();
-		int pos;
-		while(it.hasNext()) {
-			pos=it.next();
-			Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
-			if(!(c instanceof CasillaMina )) {
-				listaCasillas[pos].setIcon(new ImageIcon("res/mina-x.gif"));
-			}
-		}
-	}
-	
-
-	
-	
-	////////////////////OBSERVERREKO UPDATE-A////////////////////////
-	
-	public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla
-		Panela panela = Panela.getNirePanela();
-		
-		if(!m.getAmaiera()) {//kasilla klikatu dugu
-			JLabel label = listaCasillas[((Casilla)arg1).posizioa()];//LORTUKO DUGU KASILLA HORREN LABEL-A
-			
-			if(((Casilla)arg1).getEgoera()==0) {//Ireki dugu kasilla(CLICK EZKERRA)
-				if(arg1 instanceof CasillaMina) {
-					panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara2.gif"));
-					banderakBegiratu();
-					label.setIcon(new ImageIcon("res/mina-n.gif"));
-					panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
-					panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n-.gif"));
-					panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n-.gif"));
-				}else if(arg1 instanceof CasillaHutsa) {
-					label.setIcon(new ImageIcon("res/c0.gif"));
-					
-				}else {
-					label.setIcon(new ImageIcon("res/c"+((Casilla) arg1).getBalioa()+".gif"));
-				}
-				
-			}else if(((Casilla)arg1).getEgoera()==1) {//bandera jarri dugu
-				eguneratuMinaKont();
-				label.setIcon(new ImageIcon("res/bandera.gif"));
-			}else if(((Casilla)arg1).getEgoera()==3) {//BANDERA BATEN GAINEAN CLICK ESKUINA EGINEZ, GALDERA IKURRA ATERA
-				eguneratuMinaKont();
-				label.setIcon(new ImageIcon("res/marca.gif"));
-			}else {//bandera kendu dugu
-					eguneratuMinaKont();
-					label.setIcon(new ImageIcon("res/tablero.gif"));
-			}
-			
-		}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
-			amaierakoBanderak();
-			panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
-			hasieratuIrabazlePanela();
-		}
 	}
 	
 	
@@ -400,4 +260,167 @@ public class Kontroladore implements ActionListener, Observer{
 			listaCasillas[pos].setIcon(new ImageIcon("res/bandera.gif"));
 		}
 	}
+	
+	////////////////////////////ATRIBUTUAK/////////////////////////
+	Panela panela;
+	IrabazlePanela irabazlePanela;
+	Matrizea m = Matrizea.getNireMatrizea1();
+	JLabel[] listaCasillas;
+	private boolean bukatua = false;
+	
+	
+	////////////////////////////ERAIKITZAILEAK///////////////////////////
+	public Kontroladore() {
+		Matrizea.getNireMatrizea1().addObserver(this);
+		panela=Panela.getNirePanela();
+		irabazlePanela=IrabazlePanela.getNireIrabazlePanela();
+	}
+	
+	
+	////////////////////////////PANELEN HASIERAKETA GUZTIAK////////////////////////////
+	public void hasieratu() {
+		Matrizea.getNireMatrizea1().addObserver(this);
+		panela = Panela.getNirePanela();
+		irabazlePanela = IrabazlePanela.getNireIrabazlePanela();
+		panelaHasieratu();
+		menuaHasieratu();
+		panelGelaxkakHasieratu();
+		panelAurpegiHasieratu();
+		panelKontHasieratu();
+		panela.setVisible(true);
+	}
+	
+		//////////////////////////PANELA HASIERATU///////////////////////////
+		public void panelaHasieratu() {
+			panela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			panela.setIconImage(Toolkit.getDefaultToolkit().getImage("res/icon.png"));
+			panela.setTitle("Dragamina");
+			panela.setLocationRelativeTo(null);
+			leihoarenTamaina(m.getZ());
+			JPanel contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			contentPane.setLayout(new BorderLayout(0, 0));
+			panela.setContentPane(contentPane);
+			panela.setVisible(true);
+			panela.setResizable(false);
+			panela.setLocationRelativeTo(null);
+			m.setpartidaHasiera(System.currentTimeMillis());
+		}
+		
+		//////////////////////////MENUA HASIERATU///////////////////////////
+		private void menuaHasieratu(){
+			panela.getMenu("joku_berria").addActionListener(this);
+			panela.getMenu("erreza").addActionListener(this);
+			panela.getMenu("ertaina").addActionListener(this);
+			panela.getMenu("zaila").addActionListener(this);
+			panela.getMenu("esteka").addActionListener(this);
+		}
+		
+		//////////////////////////PANEL GELAXKAK HASIERATU/////////////////////////
+		private void panelGelaxkakHasieratu(){
+			JPanel panelGelaxkak = new JPanel();
+			panelGelaxkak.setLayout(new GridBagLayout());
+			panela.setPanelGelaxkak(panelGelaxkak);
+			JLabel[] listaGelaxka = new JLabel[m.getE()*m.getZ()];
+			listaCasillas=listaGelaxka;		
+			sortu(m.getE(),m.getZ());		
+			panela.getContentPane().add(panela.getPanelGelaxkak(), BorderLayout.CENTER);
+		}
+		
+		//////////////////////////PANEL AURPEGIA HASIERATU///////////////////////////
+	
+		
+		//////////////////////////PANEL KONT HASIERATU//////////////////////////////
+		private void panelKontHasieratu() {
+			JPanel panelKont = new JPanel();
+			JLabel minaKontZifra = new JLabel();
+			minaKontZifra.setIcon(new ImageIcon("res/n0.gif"));
+			JLabel minaKontZifra_1 = new JLabel();
+			minaKontZifra_1.setIcon(new ImageIcon("res/n0.gif"));
+			JLabel minaKontZifra_2 = new JLabel();
+			minaKontZifra_2.setIcon(new ImageIcon("res/n0.gif"));
+			panela.setminaKontZifra(minaKontZifra);
+			panela.setminaKontZifra_1(minaKontZifra_1);
+			panela.setminaKontZifra_2(minaKontZifra_2);
+			panelKont.add(panela.getminaKontZifra());
+			panelKont.add(panela.getminaKontZifra_1());
+			panelKont.add(panela.getminaKontZifra_2());
+			panela.setPanelKont(panelKont);
+			panela.getContentPane().add(panela.getPanelKont(), BorderLayout.NORTH);
+		}
+
+	
+	////////////////////////////LISTENERRAK//////////////////////////////
+	
+	////////////////////////////UPDATE METODOA////////////////////////////////
+		public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla
+			Panela panela = Panela.getNirePanela();
+			
+			if(!m.getAmaiera()) {//kasilla klikatu dugu
+				JLabel label = listaCasillas[((Casilla)arg1).posizioa()];//LORTUKO DUGU KASILLA HORREN LABEL-A
+				
+				if(((Casilla)arg1).getEgoera()==0) {//Ireki dugu kasilla(CLICK EZKERRA)
+					if(arg1 instanceof CasillaMina) {
+						panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara2.gif"));
+						banderakBegiratu();
+						label.setIcon(new ImageIcon("res/mina-n.gif"));
+						panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
+						panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n-.gif"));
+						panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n-.gif"));
+					}else if(arg1 instanceof CasillaHutsa) {
+						label.setIcon(new ImageIcon("res/c0.gif"));
+						
+					}else {
+						label.setIcon(new ImageIcon("res/c"+((Casilla) arg1).getBalioa()+".gif"));
+					}
+					
+				}else if(((Casilla)arg1).getEgoera()==1) {//bandera jarri dugu
+					eguneratuMinaKont();
+					label.setIcon(new ImageIcon("res/bandera.gif"));
+				}else if(((Casilla)arg1).getEgoera()==3) {//BANDERA BATEN GAINEAN CLICK ESKUINA EGINEZ, GALDERA IKURRA ATERA
+					eguneratuMinaKont();
+					label.setIcon(new ImageIcon("res/marca.gif"));
+				}else {//bandera kendu dugu
+						eguneratuMinaKont();
+						label.setIcon(new ImageIcon("res/tablero.gif"));
+				}
+				
+			}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
+				amaierakoBanderak();
+				panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
+				hasieratuIrabazlePanela();
+			}
+		}
+		
+		
+	////////////////////////////UPDATEN DAUDEN METODO BATZUK//////////////////////////
+		public void eguneratuMinaKont() {
+			int mKop=m.getMinaKop();
+			if (mKop>=0) {
+				int hamarreko= mKop/10;
+				int bateko= mKop%10;
+				panela.getminaKontZifra().setIcon(new ImageIcon("res/n0.gif"));
+				panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
+				panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
+			}
+			else { mKop=-mKop;
+				int hamarreko= mKop/10;
+				int bateko= mKop%10;
+				panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
+				panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n"+ hamarreko +".gif"));
+				panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n"+ bateko +".gif"));
+			}
+		}
+		
+		public void banderakBegiratu() {
+			Iterator<Integer> it=m.getListaBanderak().iterator();
+			int pos;
+			while(it.hasNext()) {
+				pos=it.next();
+				Casilla c= m.balioaBueltatu(pos/m.getZ(), pos%m.getZ());
+				if(!(c instanceof CasillaMina )) {
+					listaCasillas[pos].setIcon(new ImageIcon("res/mina-x.gif"));
+				}
+			}
+		}
 }
