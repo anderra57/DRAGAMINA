@@ -38,7 +38,6 @@ public class Matrizea extends Observable{//EMA
 	private static int zailtasuna;
 	private static boolean emanda;//boolear hau erailiko dugu jakiteko ea matrizean lehen aldiz klikatu den ala ez
 	private static boolean bukatua;//
-	private static boolean amaiera;//
 	private long partidaHasiera;
 	private String jokalariarenIzena;
 	private static ArrayList<Integer> listaBanderak;
@@ -46,9 +45,8 @@ public class Matrizea extends Observable{//EMA
 	
 	//////////////////////////ERAIKITZAILEAK//////////////////////////////
 	private Matrizea() {
-		emanda = false;
-		bukatua=false;
-		amaiera=false;
+		emanda = false;//boolear hau erabiliko dugu, matrizean click baten bat egin den ala ez jakiteko
+		bukatua=false;//boolear hau erabiliko dugu partida amaitu den ala ez jakiteko
 	}
 	
 	public static Matrizea getNireMatrizea1(){
@@ -75,8 +73,8 @@ public class Matrizea extends Observable{//EMA
 		return kasillaOnak;
 	}
 	
-	public boolean getAmaiera() {
-		return amaiera;
+	public boolean getbukatua() {
+		return bukatua;
 	}
 	
 	public int getE() {
@@ -209,35 +207,34 @@ public class Matrizea extends Observable{//EMA
 	
 		/////////////////////CLICK EZKERRA///////////////////////
 		public void clickEzkerra(int zenb, JLabel lab) {
-			if(!bukatua) {
+			if(!bukatua) {//mina bat edo partida irabazi badugu, ezin dugu click egin interfaze grafikoan
 				int zenbakia = zenb;
 				if(!emanda){
 						matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
 						zenbakiakJarri();
 						emanda=true;
-						System.out.println(jokalariarenIzena);
 				}
 				Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
-				if (c.getEgoera() == 2 || c.getEgoera()==3) {
+				if (c.getEgoera() == 2 || c.getEgoera()==3) {//kasilla itxita edo galdera ikurra badauka 
 					if(c instanceof CasillaMina){//balioa = -1 mina bat aurkitu dugu, ondorioz galdu dugu
 						c.egoeraAldatu(0);
 						minakPantailaratu();
-						lab.setIcon(new ImageIcon("res/mina-r.gif"));
-						bukatua=true;	
-						amaiera=true;
+						lab.setIcon(new ImageIcon("res/mina-r.gif"));		
+						bukatua=true;
 					}else if(c instanceof CasillaHutsa){//balioa= 0 bada, lauki horretan hutsune bat dago, ondorioz, matrizea
 							MatrizeaZabaldu(c);
-					}else{
+					}else{//kasilla zenbakiduna bada emen sartuko da
 							kasillaOnakBatKendu();
 							c.egoeraAldatu(0);
 							begiratuak.add(c.posizioa());
+							//obderverra aktibatu, irdukia jartzeko
 							setChanged();
 							notifyObservers(c);
 					}
 				}
-				if(getKasillaOnak()==0) {
-					amaiera=true;
-					bukatua = true;
+				if(getKasillaOnak()==0) {//momentu honetan, partida irabazi dugu, minak ez diren kasilla guztiak klikatu ditugulako
+					bukatua=true;
+					//kasu honeta, observerra aktibatuko da, irabazi dugulako eta irabazlePanela hasieratu behar delako
 					setChanged();
 					notifyObservers();
 					amaituPanela();
@@ -245,9 +242,10 @@ public class Matrizea extends Observable{//EMA
 			}
 		}
 		
+		
 		/////////////////////CLICK ESKUINA///////////////////////
 		public void clickEskuina(int zenb, JLabel lab) {
-			if(!bukatua) {
+			if(!bukatua) {//lehen bezala, partida irabazi edo galdu badugu ezin dugu click egin
 				int zenbakia = zenb;
 				if(!emanda){
 					matrizeaSortu(zenbakia/zutabea, zenbakia%zutabea);
@@ -255,21 +253,24 @@ public class Matrizea extends Observable{//EMA
 					emanda=true;
 				}
 				Casilla c = balioaBueltatu((zenbakia/zutabea), (zenbakia % zutabea));
-				if(c.getEgoera() == 1) { //bandera kendu
+				if(c.getEgoera() == 1) { //bandera duen kasilla bat klikatzen dugunean
 						c.egoeraAldatu(3); //galdera ikurra
 						eguneratuMinaKont(false);
+						//observerra aktibatu, irudia jartzeko
 						setChanged();
 						notifyObservers(c);
 						listaBanderak.remove(listaBanderak.indexOf(zenbakia));
 				}
-				else if (c.getEgoera() == 2) { //bandera kokatu
-					c.egoeraAldatu(1); //bandera
+				else if (c.getEgoera() == 2) { //kasilla itxi batean mina bat jartzen dugunean
+					c.egoeraAldatu(1); //bandera jarri
 					eguneratuMinaKont(true);
+					//observerra aktibatu, irudia jartzeko
 					setChanged();
 					notifyObservers(c);
 					listaBanderak.add(zenbakia);
-				}else{//galdera ikurra klikatu dugu
-					c.egoeraAldatu(2); //itxita	
+				}else if(c.getEgoera()==3){//galdera ikurra duen kasilla klikatu dugu
+					c.egoeraAldatu(2); //tableroa jarri
+					//observerra aktibatu, irudia jartzeko
 					setChanged();
 					notifyObservers(c);
 				}
@@ -290,16 +291,18 @@ public class Matrizea extends Observable{//EMA
 			while(!begiratuGabe.isEmpty()) {
 				kasilla=begiratuGabe.remove();
 				kasillaOnakBatKendu();
-				kasilla.egoeraAldatu(0);
+				kasilla.egoeraAldatu(0);//kasilla irekita bezala jarriko dugu
 				i = kasilla.geti();
 				j = kasilla.getj();
 				zabaldu(pos(i,j),kasilla.getBalioa());//laukiaren balioa bistaratuko dugu panelea
-				if(kasilla instanceof CasillaHutsa) {
+				if(kasilla instanceof CasillaHutsa) {//kasilla hutsa bada, errekurtsiboki bere albokoak ere irekiko dira
 					for(int x = i-1;x<=i+1;x++) {//goiko metodoan erabili den for berdina da
 						for(int y = j-1; y<=j+1;y++) {
 							if(x<0 || y<0 || y>zutabea-1 || x>errenkada-1) {
 								//matrizetik kanpo dago
 							}else {
+								//orain kasillak sartuko ditugu lista, kasilla horiek lehen begiratu baziren, 
+								//ez dira berriz ere sartuko
 								if(!begiratuak.contains(pos(x,y))){
 									Casilla unek = matrizea[x][y];
 									begiratuGabe.add(unek); 
@@ -314,19 +317,21 @@ public class Matrizea extends Observable{//EMA
 		
 		public void zabaldu(int num, int zenbat){
 		   	Casilla c = balioaBueltatu(num/zutabea, num%zutabea);
+		  //observerra aktibatu, irudia jartzeko
 		   	setChanged();
 		   	notifyObservers(c);
 		}
 		
 		
 	//////////////////////////MINAK BISTARATU(KASILLA MINADUNA KLIKATZEN BADUGU)/////////////////////
-		public void minakPantailaratu(){
+		public void minakPantailaratu(){//galtzen dugunean aktibatuko den metodoa
 			Iterator<Integer> it=listaMinak.iterator();
 			int pos;
 			while(it.hasNext()){
 				pos=it.next();
 				Casilla c = this.balioaBueltatu(pos/zutabea, pos%zutabea);
 				c.egoeraAldatu(0);
+				//observerra aktibatu, irudia jartzeko
 				setChanged();
 				notifyObservers(c);
 			}
@@ -462,7 +467,7 @@ public class Matrizea extends Observable{//EMA
 		
 		//////////////////MENUAREKIN HASIERATZEN BADUGU////////////////////////
 		public void menuaAukeratu(int zein) {
-			amaiera=false;
+			bukatua=false;
 			if(zein==1) {
 				jokoBerriaHasieratu(1);
 			}else if(zein==2) {

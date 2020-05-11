@@ -95,7 +95,8 @@ public class Kontroladore implements ActionListener, Observer{
 	
 	
 	///////////////////JOKO BERRIA HASIERATU(LEHENENGOA)///////////////////////
-
+	
+	//metodo hau erabiliko da, lehen aldiz jokoa hasieratzen denean
 	public void jokoaLehenAldizHasieratu(int zailtasuna, String izena) {
 		if(zailtasuna==1) {
 			m.hasierakeraBotoia(zailtasuna, izena);
@@ -127,8 +128,10 @@ public class Kontroladore implements ActionListener, Observer{
 		}
 	}
 	
-	////////////////////AMAIERAKO PANELA////////////////////////////
-	public void amaierakoBanderak() {
+	////////////////////BUKATU PANELA////////////////////////////
+	
+	//partida irabazten dugunean, minak zeuden posizioetan, banderak jarriko ditugu
+	public void bukatukoBanderak() {
 		Iterator<Integer> it=m.getListaMinak().iterator();
 		int pos;
 		while(it.hasNext()) {
@@ -294,10 +297,12 @@ public class Kontroladore implements ActionListener, Observer{
 			btnAurpegi.addMouseListener(new MouseListener(){
 				@Override
 				public void mouseClicked(MouseEvent arg0){
-					if(m.getAmaiera()) {
+					//aurpegia bi egoeratan klikatu daiteke, partida galdu dugunean berriz ere hasteko
+					//edo, partida erdian berriz ere hasi nahi dugunean
+					if(m.getbukatua()) {//partida bukatu da
 						BerriroJokatu berriz = new BerriroJokatu();
 						berriz.setVisible(true);
-					}else {
+					}else {//partida erdian gaude
 							aurpegianKlikEgin(m.getZailtasuna(),m.getIzena());
 						
 					}
@@ -331,45 +336,50 @@ public class Kontroladore implements ActionListener, Observer{
 		public void update(Observable arg0, Object arg1) {//arg1-->klikatutako kasilla
 			Panela panela = Panela.getNirePanela();
 			
-			if(!m.getAmaiera()) {//kasilla klikatu dugu
+			if(!m.getbukatua()) {//kasilla klikatu dugu
 				JLabel label = listaCasillas[((Casilla)arg1).posizioa()];//LORTUKO DUGU KASILLA HORREN LABEL-A
 				
 				if(((Casilla)arg1).getEgoera()==0) {//Ireki dugu kasilla(CLICK EZKERRA)
 					if(arg1 instanceof CasillaMina) {
 						panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara2.gif"));
-						banderakBegiratu();
+						banderakBegiratu();//banderak begiratuko ditugu jakiteko ea ez-minadun posizio batean bandera dagoen ala ez
 						label.setIcon(new ImageIcon("res/mina-n.gif"));
 						panela.getminaKontZifra().setIcon(new ImageIcon("res/n-.gif"));
 						panela.getminaKontZifra_1().setIcon(new ImageIcon("res/n-.gif"));
 						panela.getminaKontZifra_2().setIcon(new ImageIcon("res/n-.gif"));
-					}else if(arg1 instanceof CasillaHutsa) {
+						
+					}else if(arg1 instanceof CasillaHutsa) {//kasilla hutsa
 						label.setIcon(new ImageIcon("res/c0.gif"));
 						
-					}else {
+					}else {//zenbakidun kasilla
 						label.setIcon(new ImageIcon("res/c"+((Casilla) arg1).getBalioa()+".gif"));
 					}
 					
 				}else if(((Casilla)arg1).getEgoera()==1) {//bandera jarri dugu
-					eguneratuMinaKont();
+					eguneratuMinaKont();//mina kontagailuari unitate bat kenduko diogu
 					label.setIcon(new ImageIcon("res/bandera.gif"));
+					
 				}else if(((Casilla)arg1).getEgoera()==3) {//BANDERA BATEN GAINEAN CLICK ESKUINA EGINEZ, GALDERA IKURRA ATERA
-					eguneratuMinaKont();
+					eguneratuMinaKont();//mina kontagialuari unitate bat gehituko diogu
 					label.setIcon(new ImageIcon("res/marca.gif"));
-				}else {//bandera kendu dugu
-						eguneratuMinaKont();
+					
+				}else {//bandera kendu dugu, galdera ikurrian klik eskuina eginez
 						label.setIcon(new ImageIcon("res/tablero.gif"));
 				}
 				
 			}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
-				amaierakoBanderak();
+				bukatukoBanderak();//lehenik eta behin, minak zeuden posizioetan banderak jarriko dira
 				panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
-				hasieratuIrabazlePanela();
+				hasieratuIrabazlePanela();//irabazle panela hasieratuko da
 			}
 		}
 	
 		
 	////////////////////////////MENUAREN AUKERAKETA/////////////////////////
 		@Override
+		
+		
+		
 		public void actionPerformed(ActionEvent e) { // Metodo hau daukagu menuaren edozein aukera click-atzen dugunean.
 			String izena = m.getIzena();
 			panela.setVisible(false);
@@ -398,6 +408,9 @@ public class Kontroladore implements ActionListener, Observer{
 		
 	////////////////////////////UPDATEN DAUDEN METODO BATZUK//////////////////////////
 		public void eguneratuMinaKont() {
+			//metodo hau erabiliko dugu mina kontadorea bezala, hasieran, tableroan dauden mina kopurua aurkeztuko du
+			// eta bandera bat ipintzen badugu kontagailu honi unitate bat kenduko zaio eta bandera bat kentzen 
+			//badugu kontagailu honi unitate bat gehituko zaio
 			int mKop=m.getMinaKop();
 			if (mKop>=0) {
 				int hamarreko= mKop/10;
@@ -416,6 +429,8 @@ public class Kontroladore implements ActionListener, Observer{
 		}
 		
 		public void banderakBegiratu() {
+			//metodo hau erabiliko da, partida galtzen denean, mina bat ez zegoen posizio batean bandera kokatuta
+			//badago, posizio horretan x-dun mina agertuko da
 			Iterator<Integer> it=m.getListaBanderak().iterator();
 			int pos;
 			while(it.hasNext()) {
