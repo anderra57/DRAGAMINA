@@ -88,7 +88,6 @@ public class Matrizea extends Observable{//EMA
 	public void setZailtasuna(int zenbakia) {
 		zailtasuna=zenbakia;
 		minaKop=zailtasuna*zutabea;
-		minaKop=3;
 	}
 	
 	public int getZailtasuna() {
