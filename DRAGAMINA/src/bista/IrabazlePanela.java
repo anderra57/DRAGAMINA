@@ -24,11 +24,7 @@ public class IrabazlePanela extends JFrame {
 		}
 		return nirePanela;
 	}
-	
-	/*public void setIrabazlePanela(IrabazlePanela panel) {
-		nirePanela = panel;
-	}*/
-	
+
 	public JPanel getContentPane1(){
 		return contentPane;
 	}

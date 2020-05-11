@@ -131,7 +131,7 @@ public class Kontroladore implements ActionListener, Observer{
 	////////////////////BUKATU PANELA////////////////////////////
 	
 	//partida irabazten dugunean, minak zeuden posizioetan, banderak jarriko ditugu
-	public void bukatukoBanderak() {
+	public void amaierakoBanderak() {
 		Iterator<Integer> it=m.getListaMinak().iterator();
 		int pos;
 		while(it.hasNext()) {
@@ -368,7 +368,7 @@ public class Kontroladore implements ActionListener, Observer{
 				}
 				
 			}else {//partida amaitu da, bakarrik aktibatuko da partida irabazten badugu
-				bukatukoBanderak();//lehenik eta behin, minak zeuden posizioetan banderak jarriko dira
+				amaierakoBanderak();//lehenik eta behin, minak zeuden posizioetan banderak jarriko dira
 				panela.getBtnAurpegi().setIcon(new ImageIcon("res/cara3.gif"));
 				hasieratuIrabazlePanela();//irabazle panela hasieratuko da
 			}
