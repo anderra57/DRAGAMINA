@@ -1,6 +1,7 @@
 package bista;
 
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -42,6 +43,8 @@ public class BerriroJokatu extends JDialog {
 	public BerriroJokatu() {
 		setBounds(100, 100, 450, 100);
 		setLocationRelativeTo(null);
+		setIconImage(Toolkit.getDefaultToolkit().getImage("res/icon.png"));
+		setTitle("Dragamina");
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.NORTH);
 		

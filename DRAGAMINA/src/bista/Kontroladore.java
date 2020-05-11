@@ -275,11 +275,21 @@ public class Kontroladore implements ActionListener, Observer{
 		private void panelKontHasieratu() {
 			JPanel panelKont = new JPanel();
 			JLabel minaKontZifra = new JLabel();
-			minaKontZifra.setIcon(new ImageIcon("res/n0.gif"));
 			JLabel minaKontZifra_1 = new JLabel();
-			minaKontZifra_1.setIcon(new ImageIcon("res/n0.gif"));
-			JLabel minaKontZifra_2 = new JLabel();
-			minaKontZifra_2.setIcon(new ImageIcon("res/n0.gif"));
+			JLabel minaKontZifra_2 = new JLabel();	
+			if(m.getZailtasuna()==1) {
+				minaKontZifra.setIcon(new ImageIcon("res/n0.gif"));
+				minaKontZifra_1.setIcon(new ImageIcon("res/n1.gif"));
+				minaKontZifra_2.setIcon(new ImageIcon("res/n0.gif"));
+			}else if(m.getZailtasuna()==2) {
+				minaKontZifra.setIcon(new ImageIcon("res/n0.gif"));
+				minaKontZifra_1.setIcon(new ImageIcon("res/n3.gif"));
+				minaKontZifra_2.setIcon(new ImageIcon("res/n0.gif"));
+			}else {
+				minaKontZifra.setIcon(new ImageIcon("res/n0.gif"));
+				minaKontZifra_1.setIcon(new ImageIcon("res/n7.gif"));
+				minaKontZifra_2.setIcon(new ImageIcon("res/n5.gif"));
+			}
 			panela.setminaKontZifra(minaKontZifra);
 			panela.setminaKontZifra_1(minaKontZifra_1);
 			panela.setminaKontZifra_2(minaKontZifra_2);
